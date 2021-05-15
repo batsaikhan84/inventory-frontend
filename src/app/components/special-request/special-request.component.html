@@ -1,0 +1,28 @@
+<mat-toolbar color="accent">
+    <mat-form-field appearance="standard" floatLabel="never" style="width: 20em; margin: 0 2em 0 1em;">
+        <input matInput type="text" name="searchValue" [(ngModel)]="searchValue" placeholder="Search" autocomplete="off" (ngModelChange)="handleSearch($event)">
+        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchValue"  (click) = 'handleClearSearch()'>
+            <mat-icon>close</mat-icon>
+          </button>
+        <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
+    </mat-form-field>
+    <button mat-raised-button color="warn" [disabled]="isButtonDisabled" (click)="handleSendRequest()"><mat-icon matSuffix>edit</mat-icon> Send Request</button>
+</mat-toolbar>
+<ag-grid-angular
+    #agGrid
+    id='masterInventoryGrid'
+    style="width: 100%; height: 85%;"
+    [headerHeight]=50
+    [defaultColDef] = "defaultColDef"
+    class='ag-theme-alpine'
+    [rowData]='rowData'
+    [columnDefs]='columnDefs'
+    rowSelection="single"
+    (selectionChanged)="getSelectedRows()"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    (gridReady)="onGridReady($event)"
+    [pagination]="true"
+    [animateRows]="true"
+    [paginationPageSize]=50
+></ag-grid-angular>
+

@@ -1,0 +1,10 @@
+<div *ngIf="!authService.isLoggedin()">
+<div>
+    <app-auth></app-auth>
+</div>
+
+<div>
+    <button mat-raised-button color="primary" (click)="handleLogout()">Submit</button>
+</div>
+
+
