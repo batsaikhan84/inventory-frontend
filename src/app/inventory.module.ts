@@ -76,6 +76,9 @@ import { ReceivingDepartmentComponent } from './components/departments/receiving
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { ChemicalFilterPipe } from './shared/custom-pipe/chemical-filter.pipe';
+import { StoreRoomDropdownRendererComponent } from './components/admin/store-room/store-room-dropdown-renderer/store-room-dropdown-renderer.component';
+import { StoreRoomSpecialRequestComponent } from './components/departments/store-room-special-request/store-room-special-request.component';
+import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-room-special-request-form/store-room-special-request-form.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +136,10 @@ import { ChemicalFilterPipe } from './shared/custom-pipe/chemical-filter.pipe';
     ExtractionDepartmentComponent,
     SignupFormComponent,
     ReceivingDepartmentComponent,
-    ChemicalFilterPipe
+    ChemicalFilterPipe,
+    StoreRoomDropdownRendererComponent,
+    StoreRoomSpecialRequestComponent,
+    StoreRoomSpecialRequestFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,11 @@
 <mat-toolbar color="primary" class="mat-elevation-z8">
-  <!-- <a href="">
-    <img class="logo" src="../../../assets/images/Logo-USDTL-Only_Large.png" alt="">
-  </a> -->
+
   <img class="logo" src="../../../assets/images/Logo-USDTL-Only_Large.png" alt="">
-  <!-- <a mat-button color="basic" [routerLink]="['']">HOME</a> -->
-  <mat-card style="padding: 2px 10px; color: #673ab7; font-weight: 600;" *ngIf="getDepartmentName()">{{ getDepartmentName() }}</mat-card>
+
+    <div class="store-room-special-request-nav" *ngIf="dataService.getUser()">
+    <a mat-button color="primary" [routerLink]="['department', 'home']" 
+       style="background-color: #ffffff; font-weight: 900;">{{  dataService.getUser().department | uppercase }}</a>
+  </div>
   <div class="admin-nav" *ngIf="isAdmin()">
     <a mat-button color="basic" [routerLink]="['admin', 'master']">MASTER INVENTORY</a>
     <a mat-button [matMenuTriggerFor]="afterMenu">INVENTORY BY DEPARTMENT</a>
@@ -20,55 +21,31 @@
     <a mat-button color="basic" [routerLink]="['admin', 'special-request']">SPECIAL REQUEST</a>
   </div>
   <div class="extraction-nav" *ngIf="isExtraction()">
-    <!-- <a mat-button color="basic" routerLink="/extraction-chemical-inventory">CHEMICAL INVENTORY</a> -->
-    <a mat-button color="basic" [routerLink]="['department', 'extraction']">INVENTORY</a>
+    <a mat-button color="basic" [routerLink]="['department', 'extraction-inventory']">INVENTORY</a>
   </div>
   <div class="mass-spec-nav" *ngIf="isMassSpec()">
-    <!-- <a mat-button color="basic" routerLink="/mass-spec-chemical-inventory">CHEMICAL INVENTORY</a> -->
-    <a mat-button color="basic" [routerLink]="['department', 'mass-spec']">INVENTORY</a>
+    <a mat-button color="basic" [routerLink]="['department', 'mass-spec-inventory']">INVENTORY</a>
   </div>
   <div class="receiving-nav" *ngIf="isReceiving()">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
-    <a mat-button color="basic" [routerLink]="['department', 'receiving']">INVENTORY</a>
+    <a mat-button color="basic" [routerLink]="['department', 'receiving-inventory']">INVENTORY</a>
   </div>
   <div class="screening-nav" *ngIf="isScreening()">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
-    <a mat-button color="basic" [routerLink]="['department', 'screening']">INVENTORY</a>
+    <a mat-button color="basic" [routerLink]="['department', 'screening-inventory']">INVENTORY</a>
   </div>
   <div class="rd-nav" *ngIf="isRd()">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
-    <a mat-button color="basic" [routerLink]="['department', 'rd']">INVENTORY</a>
+    <a mat-button color="basic" [routerLink]="['department', 'rd-inventory']">INVENTORY</a>
   </div>
-  <!-- <div class="quality-nav" *ngIf="isQuality()">
-    <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a>
-    <a mat-button color="basic" [routerLink]="['department', 'quality']">INVENTORY</a>
-  </div> -->
-  <!-- <div class="safety-nav" *ngIf="isSafety()">
-    <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a>
-    <a mat-button color="basic" [routerLink]="['department', 'safety']">INVENTORY</a>
-  </div> -->
-  <div class="special-request-nav" *ngIf="isReceiving() || isMassSpec() || isExtraction() || isScreening() || isRd() || isQuality() || isSafety()">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
+  <div class="special-request-nav" *ngIf="dataService.getUser() && !isAdmin()">
     <a mat-button color="basic" [routerLink]="['department', 'special-request']">SPECIAL REQUEST</a>
   </div>
-  <div class="chemical-nav" *ngIf="isReceiving() || isMassSpec() || isExtraction() || isScreening() || isRd() || isQuality() || isSafety() || isAdmin()">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
+  <div class="chemical-nav" *ngIf="dataService.getUser()">
     <a mat-button color="basic" [routerLink]="['chemical']">CHEMICAL</a>
   </div>
   <span class="fill-remaining-space"></span>
   <div class="signup" style="margin-right: 1em;">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
     <button mat-raised-button color="warn" *ngIf="isIt()" (click)="handleSignup()">SIGN UP</button>
   </div>
   <div class="signout">
-    <!-- <a mat-button color="basic" routerLink="/receiving-chemical-inventory">CHEMICAL INVENTORY</a> -->
     <button mat-raised-button color="warn" *ngIf="authService.isLoggedin()" (click)="handleLogout()">SIGN OUT</button>
   </div>
 </mat-toolbar>
-
-
-
-
-
-
-

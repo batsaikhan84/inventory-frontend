@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ExtractionButtonRendererComponent } from './extraction-button-renderer/extraction-button-renderer.component';
 import { ColumnDefsService } from 'src/app/shared/services/column-defs.service';
-import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
   selector: 'app-extraction',

@@ -1,8 +1,10 @@
+import { DataService } from 'src/app/shared/services/data.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SignupFormComponent } from '../forms/signup-form/signup-form.component';
+import { IUser } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-navbar',
@@ -10,35 +12,24 @@ import { SignupFormComponent } from '../forms/signup-form/signup-form.component'
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  department = ''
-  constructor(public authService: AuthService, private router: Router, private dialog: MatDialog) {
+  constructor(public authService: AuthService,
+              public dataService: DataService, 
+              private router: Router, 
+              private dialog: MatDialog) {
   }
-  ngOnInit(): void { 
-    this.authService.getCurrentUser()
+  ngOnInit(): void { }
+  handleLogout() {
+    this.authService.logout()
   }
-  getDepartmentName() {
-    if(this.authService.getCurrentUser().department === 'extraction') {
-      return "EXTRACTION"
-    }
-    if(this.authService.getCurrentUser().department === 'massSpec') {
-      return "MASS SPEC"
-    }
-    if(this.authService.getCurrentUser().department === 'receiving') {
-      return "RECEIVING"
-    }
-    if(this.authService.getCurrentUser().department === 'rd') {
-      return "R&D"
-    }
-    if(this.authService.getCurrentUser().department === 'screeining') {
-      return "SCREENING"
-    }
-    if(this.authService.getCurrentUser().department === 'quality') {
-      return "EXTRACTION"
-    }
-    if(this.authService.getCurrentUser().department === 'safety') {
-      return "SAFETY"
-    }
-    return null
+  handleSignup() {
+    this.openDialog()
+  }
+  openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    this.dialog.open(SignupFormComponent, dialogConfig)
   }
   isAdmin(): boolean {
     return this.authService.getCurrentUser().role === "admin" ? true : false
@@ -66,19 +57,5 @@ export class NavbarComponent implements OnInit {
   }
   isIt(): boolean {
     return this.authService.getCurrentUser().department === "it" ? true : false
-  }
-  handleLogout() {
-    this.authService.logout()
-    this.router.navigate([''])
-  }
-  handleSignup() {
-    this.openDialog()
-  }
-  openDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    this.dialog.open(SignupFormComponent, dialogConfig)
   }
 }

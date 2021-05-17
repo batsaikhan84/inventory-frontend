@@ -1,11 +1,12 @@
 <mat-toolbar color="accent">
-    <mat-form-field appearance="standard" floatLabel="never" style="width: 20em; margin: 0 2em 0 1em;">
-        <input matInput type="text" name="searchValue" [(ngModel)]="searchValue" placeholder="Search" autocomplete="off" (ngModelChange)="handleSearch($event)">
-        <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchValue"  (click) = 'handleClearSearch()'>
-            <mat-icon>close</mat-icon>
-          </button>
-        <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
-    </mat-form-field>
+    <form class="search">
+        <mat-form-field appearance="standard" floatLabel="never" style="width: 20em; margin: 0 2em 0 1em;">
+            <input matInput type="text" name="searchValue" [(ngModel)]="searchValue" placeholder="Search ..." autocomplete="off" (ngModelChange)="handleSearch($event)">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchValue"  (click) = 'handleClearSearch()'>            <mat-icon>close</mat-icon>
+            </button>
+            <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
+        </mat-form-field>
+    </form> 
     <span class=spacer></span>
     <mat-card style="padding: 2px 10px; background-color: #673ab7; color: white;">EXTRACTION</mat-card>
 </mat-toolbar>

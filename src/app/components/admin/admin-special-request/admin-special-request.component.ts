@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { IMaster } from 'src/app/shared/models/master.model';
-import { ISpecialRequest } from 'src/app/shared/models/special-request.mode';
+import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 
 @Component({

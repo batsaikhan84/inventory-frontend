@@ -13,6 +13,7 @@ import { MasterService } from '../../../shared/services/master.service';
 export class MasterComponent implements OnInit {
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
   baseUrl = 'http://localhost:3000/master'
+  isSpecialRequest: boolean = false
   isDeleteButtonDisabled: boolean = true;
   isAssignButtonDisabled: boolean = true;
   selectedItem: IMaster;
@@ -102,8 +103,8 @@ export class MasterComponent implements OnInit {
   handleSearch(value: string) {
     this.gridApi.setQuickFilter(value);
   }
-  handleAssign(departmentName: string) {
-    this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName).subscribe(response => response)
+  handleAssign(departmentName: string, isSpecialRequest: boolean = false) {
+    this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName, isSpecialRequest).subscribe(response => response)
     this.isDeleteButtonDisabled = true
     this.isAssignButtonDisabled = true
     this.gridApi.deselectAll();

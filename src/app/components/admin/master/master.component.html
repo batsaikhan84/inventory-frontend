@@ -11,13 +11,23 @@
     <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" [disabled]="isAssignButtonDisabled">Assign To Department</button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item value="extraction" (click)="handleAssign('extraction')">Extraction</button>
+        <mat-divider></mat-divider>
         <button mat-menu-item value="receiving" (click)="handleAssign('receiving')">Receiving</button>
+        <mat-divider></mat-divider>
         <button mat-menu-item value="massSpec" (click)="handleAssign('massSpec')">Mass Spec</button>
+        <mat-divider></mat-divider>
         <button mat-menu-item value="screening" (click)="handleAssign('screening')">Screening</button>
+        <mat-divider></mat-divider>
         <button mat-menu-item value="rd" (click)="handleAssign('rd')">R&D</button>
+        <mat-divider></mat-divider>
         <button mat-menu-item value="quality" (click)="handleAssign('quality')">Quality</button>
-        <button mat-menu-item value="storeRoom" (click)="handleAssign('storeRoom')">Store Room</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item [matMenuTriggerFor]="isSpecialRequest">Store Room</button>
     </mat-menu>
+    <mat-menu #isSpecialRequest="matMenu">
+        <button mat-menu-item (click)="handleAssign('storeRoom', false)">No Special Request Item</button>
+        <button mat-menu-item (click)="handleAssign('storeRoom', true)">Yes Special Request Item</button>
+      </mat-menu>
     <span class=spacer></span>
     <button mat-raised-button (click)="sizeToFit()">Size to Fit</button>
     <button mat-raised-button (click)="autoSizeAll(false)">Auto-Size All</button>

@@ -22,10 +22,25 @@ export class AuthComponent implements OnInit {
     this.dataService.currentMessage.subscribe(message => this.loginErrorMessage = message)
   }
   onSubmit = () => {
-    this.authService.signin(this.form.value)
+    this.authService.signin(this.form.value).subscribe({
+      next: (data) => { 
+        this.dataService.loginErrorMessage('')
+        this.dataService.updateUser(data)
+        if(data.role === 'admin') {
+          this._router.navigate(['/admin/master'])
+        } else {
+          this._router.navigate(['/department/home'])
+        }
+
+      },
+      error: (error) => {
+        if(error.status === 400 || error.status === 401 ) {
+          this.dataService.loginErrorMessage('There was a problem logging in. Please check your username and password.')
+        }
+      }
+    })
   }
   getErrorMessage() {
     return 'This field is required';
   }
-
 }

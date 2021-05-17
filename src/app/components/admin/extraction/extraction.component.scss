@@ -8,9 +8,11 @@
     margin: 0;
     padding: 0;
 }
-.mat-input-wrapper{
-    width:400px !important;
-  }
+.search {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
 .mat-raised-button {
     margin: 0 0.5em;
 }

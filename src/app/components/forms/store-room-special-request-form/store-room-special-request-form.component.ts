@@ -1,25 +1,25 @@
-import { DataService } from 'src/app/shared/services/data.service';
-import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
-import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
 import { IUser } from 'src/app/shared/models/user.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { DataService } from 'src/app/shared/services/data.service';
+import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 
 @Component({
-  selector: 'app-special-request-form',
-  templateUrl: './special-request-form.component.html',
-  styleUrls: ['./special-request-form.component.scss']
+  selector: 'app-store-room-special-request-form',
+  templateUrl: './store-room-special-request-form.component.html',
+  styleUrls: ['./store-room-special-request-form.component.scss']
 })
-export class SpecialRequestFormComponent implements OnInit {
+export class StoreRoomSpecialRequestFormComponent implements OnInit {
   currentUser: IUser
   specialRequestItem: any
   specialRequestForm = new FormGroup({
     Quantity: new FormControl('', [Validators.required]),
   })
   constructor(private _specialRequestService: SpecialRequestService, 
-              private dialog: MatDialogRef<SpecialRequestFormComponent>, 
+              private dialog: MatDialogRef<StoreRoomSpecialRequestFormComponent>, 
               private _dataService: DataService,
               @Inject(MAT_DIALOG_DATA) 
               public data: any,
@@ -32,14 +32,14 @@ export class SpecialRequestFormComponent implements OnInit {
   }
   onSubmit() {
     const data: ISpecialRequest = {
-      Item_ID: this.specialRequestItem.ID,
+      Item_ID: this.specialRequestItem.Item_ID,
       Quantity: Number(this.specialRequestForm.value.Quantity),
       Item: this.specialRequestItem.Item,
       Recent_CN: this.specialRequestItem.Recent_CN,
+      Is_Special_Request: this.specialRequestItem.Is_Special_Request,
       Department: this.currentUser.department,
       User_Name: this.currentUser.name,
     }
-    console.log(data)
     this._specialRequestService.createSpecialRequestItem(data).subscribe(response => alert(response.Item))
     this.onClose()
   }

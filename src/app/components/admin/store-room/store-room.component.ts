@@ -1,4 +1,4 @@
-import { IStoreRoom } from './../../../shared/models/store-room.model';
+import { StoreRoomDropdownRendererComponent } from './store-room-dropdown-renderer/store-room-dropdown-renderer.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
@@ -19,10 +19,13 @@ export class StoreRoomComponent implements OnInit {
   defaultColDef: any;
   columnDefs: any;
   rowData: any;
+  context: any;
 
-  constructor(private storeRoomService: StoreRoomService, private needToOrderService: NeedToOrderService) { }
+  constructor(private storeRoomService: StoreRoomService, private needToOrderService: NeedToOrderService) { 
+    this.frameworkComponents = {dropdownRenderer: StoreRoomDropdownRendererComponent };
+  }
   ngOnInit(): void {
-    this.getExtractionTotal()
+    this.getStoreRoomMaster()
     this.defaultColDef = { 
       resizable: true,
       sortable: true,
@@ -31,7 +34,7 @@ export class StoreRoomComponent implements OnInit {
     }
     this.handleEditing()
   }
-  getExtractionTotal(): void {
+  getStoreRoomMaster(): void {
     this.storeRoomService.getStoreRoomMasterItems().subscribe(responseData => this.rowData = responseData)
   }
   onBtnClick(event: any) {
@@ -44,13 +47,18 @@ export class StoreRoomComponent implements OnInit {
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
       {headerName: 'Part Number', field: 'Part_Number', minWidth: 150},
       {headerName: 'Recent CN', field: 'Recent_CN'},
-      {headerName: 'Total Quantity', field: 'Quantity', minWidth: 150, editable: true,  'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
+      {headerName: 'Total Quantity', field: 'Quantity', minWidth: 150, 
+      editable: true,  
+        'type': 'numericColumn', 
+        valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
       {headerName: 'Usage_Level', field: 'Usage_Level', editable: true},
       {headerName: 'Min Quantity', field: 'Min_Quantity', editable: true,  'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Min_Quantity = Number(params.newValue)} },
       {headerName: 'Max Quantity', field: 'Max_Quantity', editable: true,  'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Max_Quantity = Number(params.newValue)} },
       {headerName: 'Need To Order', cellStyle: this.needToOrderService.styleNeedToOrder, valueFormatter: this.needToOrderService.getNeedToOrderNumber},
       {headerName: 'Issued', field: 'Issued', editable: true},
-      {headerName: 'Received', field: 'Received', editable: true }
+      {headerName: 'Received', field: 'Received', editable: true },
+      {headerName: 'Is Special Request Item', field: 'Is_Special_Request', minWidth: 150, cellRenderer: 'dropdownRenderer'
+      }
     ]
   }
   sizeToFit() {
@@ -83,7 +91,7 @@ export class StoreRoomComponent implements OnInit {
       const Quantity = params.data.Quantity - Number(params.newValue)
       if(Quantity < 0) {
         alert('cannot issue more than total on hand')
-        this.getExtractionTotal()
+        this.getStoreRoomMaster()
         return
       }
       const Issued = 0
@@ -97,7 +105,7 @@ export class StoreRoomComponent implements OnInit {
       data = {...params.data}
     }
     this.storeRoomService.updateStoreRoomItem(params.data.ID , data).subscribe({
-      next: data => this.getExtractionTotal(),
+      next: data => this.getStoreRoomMaster(),
       error: error => {
         console.error(error)
       }

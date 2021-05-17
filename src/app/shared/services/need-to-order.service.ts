@@ -7,7 +7,6 @@ export class NeedToOrderService {
 
   constructor() { }
   getNeedToOrderNumber(params: any) {
-    console.log(params)
     if(params.data.Min_Quantity === null || params.data.Max_Quantity === null) {
       return 'There is no max min'
     } else {

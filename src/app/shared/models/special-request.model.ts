@@ -1,3 +1,4 @@
+import { IStoreRoom } from './store-room.model';
 export interface ISpecialRequest {
     ID?: number;
     Item_ID: number | undefined;
@@ -9,4 +10,6 @@ export interface ISpecialRequest {
     Status?: string;
     Time_Requested?: string;
     Time_Updated?: string;
+    Is_Special_Request?: boolean;
+    storeRoom?: IStoreRoom;
 }

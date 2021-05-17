@@ -12,8 +12,8 @@ export class MasterService {
   createMasterItem(masterItem: any) {
     return this._http.post<any>(this.baseUrl, masterItem)
   }
-  updateMasterItem(id: number, selectedItem: IMaster, department: string) {
-    return this._http.patch<IMaster>(`${this.baseUrl}/${id}`, {masterItem: selectedItem, department: department})
+  updateMasterItem(id: number, selectedItem: IMaster, department: string, isSpecialRequest: boolean = false) {
+    return this._http.patch<IMaster>(`${this.baseUrl}/${id}`, {masterItem: selectedItem, department: department, isSpecialRequest: isSpecialRequest})
   }
   deleteMasterItem(id: number) {
     return this._http.delete(`${this.baseUrl}/${id}`)

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ISpecialRequest } from '../models/special-request.mode';
+import { ISpecialRequest } from '../models/special-request.model';
 
 @Injectable({
   providedIn: 'root'
