@@ -23,15 +23,18 @@ export class AuthComponent implements OnInit {
   }
   onSubmit = () => {
     this.authService.signin(this.form.value).subscribe({
-      next: (data) => { 
-        this.dataService.loginErrorMessage('')
-        this.dataService.updateUser(data)
-        if(data.role === 'admin') {
-          this._router.navigate(['/admin/master'])
-        } else {
-          this._router.navigate(['/department/home'])
+      next: (data) => {
+        if(data) {
+          this.dataService.loginErrorMessage('')
+          this.dataService.updateUser(data)
+          if(data.role === 'admin') {
+            this._router.navigate(['/admin/master'])
+          } else {
+            this._router.navigate(['/department/home'])
+          }
+          return
         }
-
+        this.dataService.loginErrorMessage('There is a user already signed in ')
       },
       error: (error) => {
         if(error.status === 400 || error.status === 401 ) {

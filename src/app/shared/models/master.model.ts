@@ -28,6 +28,6 @@ export interface IMaster{
     screening: IScreening[];
     quality: IQuality[];
     rd: IRd[];
-    masterChemical: IChemical[]
+    chemical: IChemical[]
 
 }

@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { InventoryRoutingModule } from './inventory-routing.module';
 import { InventoryComponent } from './inventory.component';
 import { MasterComponent } from './components/admin/master/master.component';
@@ -141,7 +142,11 @@ import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-r
     StoreRoomSpecialRequestComponent,
     StoreRoomSpecialRequestFormComponent
   ],
+  exports: [
+    MatChipsModule
+  ],
   imports: [
+    MatPaginatorModule,
     BrowserModule,
     InventoryRoutingModule,
     HttpClientModule,

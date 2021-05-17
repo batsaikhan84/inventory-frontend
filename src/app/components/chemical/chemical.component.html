@@ -54,25 +54,26 @@
                 <th>PHYSICAL STATE</th>
                 <th>CONTAINER SIZE</th>
                 <th>SPECIAL NOTES</th>
-                <tr *ngFor="let masterChemical of item.masterChemical">
-                    <td><span>{{ masterChemical.CAS }}</span></td>
-                    <td><span>{{ masterChemical.Physical_State }}</span></td>
-                    <td><span>{{ masterChemical.Container_Size }}</span></td>
-                    <td><span>{{ masterChemical.Special_Notes }}</span></td>
+                <tr *ngFor="let chemical of item.chemical">
+                    <td><span>{{ chemical.CAS }}</span></td>
+                    <td><span>{{ chemical.Physical_State }}</span></td>
+                    <td><span>{{ chemical.Container_Size }}</span></td>
+                    <td><span>{{ chemical.Special_Notes }}</span></td>
                 </tr>
             </table>
         </div>
-
     </div>
-    <mat-chip-list aria-label="Fish selection" *ngFor="let masterChemical of item.masterChemical">
+    
+    <mat-chip-list aria-label="Fish selection" *ngFor="let chemical of item.chemical">
         <mat-chip style="background: #3f51b5; color: white; font-size: large;">
-            HEALTH HR: <span style="font-weight: 900; margin-left: 10px;">{{ masterChemical.Health_Hr ? masterChemical.Health_Hr : 'N/A' }}</span>
+            HEALTH HR: <span style="font-weight: 900; margin-left: 10px;">{{ chemical.Health_Hr ? chemical.Health_Hr : 'N/A' }}</span>
         </mat-chip>
         <mat-chip style="background: #f44336; color: white; font-size: large;">
-            FIRE HR: <span style="font-weight: 900; margin-left: 10px;"></span>{{ masterChemical.Fire_Hr ? masterChemical.Fire_Hr : 'N/A'}}
+            FIRE HR: <span style="font-weight: 900; margin-left: 10px;"></span>{{ chemical.Fire_Hr ? chemical.Fire_Hr : 'N/A'}}
         </mat-chip>
         <mat-chip style="background: #d1d100; color: white; font-size: large;">
-            SPECIAL HR: <span style="font-weight: 900; margin-left: 10px;"></span>{{ masterChemical.Special_Hr ? masterChemical.Special_Hr : 'N/A' }}
+            SPECIAL HR: <span style="font-weight: 900; margin-left: 10px;"></span>{{ chemical.Special_Hr ? chemical.Special_Hr : 'N/A' }}
         </mat-chip>
     </mat-chip-list>
 </mat-card>
+  

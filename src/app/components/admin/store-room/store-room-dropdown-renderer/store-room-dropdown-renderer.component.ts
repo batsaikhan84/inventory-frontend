@@ -35,7 +35,7 @@ export class StoreRoomDropdownRendererComponent implements OnInit, AgRendererCom
     const Is_Special_Request = value
     const data = {...this.rowItem, Is_Special_Request}
     this._storeRoomService.updateStoreRoomItem(data.ID, data).subscribe({
-      next: data => data,
+      next: data => console.log(data),
       error: error => error
     })
   }
