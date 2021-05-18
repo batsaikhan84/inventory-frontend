@@ -1,15 +1,18 @@
+import { IMaster } from './master.model';
 import { IStoreRoom } from './store-room.model';
 export interface ISpecialRequest {
-    ID?: number;
-    Item_ID: number | undefined;
-    Item: string;
+    ID: number;
+    Item_ID?: number | undefined;
+    Item?: string;
     Quantity: number;
-    User_Name: string;
-    Recent_CN: string;
+    User: string;
+    Recent_CN?: string;
     Department: string;
     Status?: string;
     Time_Requested?: string;
     Time_Updated?: string;
+    Is_Confirmed?: boolean;
     Is_Special_Request?: boolean;
     storeRoom?: IStoreRoom;
+    master?: IMaster;
 }

@@ -4,6 +4,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AgGridAngular } from 'ag-grid-angular';
 import { IMaster } from 'src/app/shared/models/master.model';
 import { StoreRoomSpecialRequestFormComponent } from '../../forms/store-room-special-request-form/store-room-special-request-form.component';
+import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
+import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
+import { ConfirmationDataService } from 'src/app/shared/services/confirmation-data.service';
 
 @Component({
   selector: 'app-store-room-special-request',
@@ -12,7 +16,8 @@ import { StoreRoomSpecialRequestFormComponent } from '../../forms/store-room-spe
 })
 export class StoreRoomSpecialRequestComponent implements OnInit {
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
-  isButtonDisabled: boolean = true
+  isSendButtonDisabled: boolean = true
+  isConfirmButtonDisabled: boolean = true
   selectedItem: IMaster;
   searchValue: string;
   editText: string = 'Start Editing';
@@ -21,8 +26,17 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
   defaultColDef: any;
   columnDefs: any;
   rowData: any;
+  context: any;
+  confirmationSelectedItems: any;
+  confirmationData: any
 
-  constructor(private dialog: MatDialog, private storeRoomService: StoreRoomService) { }
+  constructor(private dialog: MatDialog, 
+              private storeRoomService: StoreRoomService,
+              private specialRequestService: SpecialRequestService,
+              private authService: AuthService,
+              private confirmationDataService: ConfirmationDataService) { 
+    this.context = { componentFromStoreRoomSpecialRequest: this }
+  }
 
   ngOnInit(): void {
     this.getMasterInventory()
@@ -34,6 +48,9 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     }
 
   }
+  selectedItems($event: any) {
+    this.confirmationSelectedItems = $event
+  }
   handleEditing() {
     this.columnDefs = [
       {headerName: 'ID', field: 'Item_ID', minWidth: 100, maxWidth: 110, checkboxSelection: true},
@@ -44,9 +61,25 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
       {headerName: 'Comments', field: 'Comments', minWidth: 300}
     ]
   }
+  getConfirmationItem(): void {
+    this.specialRequestService.getSpecialRequestItems().subscribe({
+      next: data => {
+        const confirmationData: any = data.filter(specialRequestItem => 
+         specialRequestItem.Is_Confirmed === false && specialRequestItem.Department === this.authService.getCurrentUser().department
+        ).map(specialRequestItem => ({
+          ...specialRequestItem,
+          Item: specialRequestItem.master?.Item
+        }))
+        this.confirmationDataService.updateCofirmationItems(confirmationData)
+      },
+      error: error => error
+    })
+  }
   getMasterInventory(): void {
     this.storeRoomService.getStoreRoomMasterItems().subscribe({
-      next: data => this.rowData = data.filter(storeRoomItems => storeRoomItems.Is_Special_Request === true),
+      next: data => this.rowData = data.filter(storeRoomItems => 
+        storeRoomItems.Is_Special_Request === true
+      ),
       error: error => error
     })
   }
@@ -60,7 +93,10 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     dialogConfig.width = "40%";
     dialogConfig.data = this.selectedItem
     const currentDialog = this.dialog.open(StoreRoomSpecialRequestFormComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(result => this.gridApi.deselectAll())
+    currentDialog.afterClosed().subscribe(() => {
+      this.gridApi.deselectAll()
+      this.getConfirmationItem()
+    })  
   }
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
@@ -69,9 +105,9 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
       return node.data
     })
     if(getSelectedData.length > 0) {
-      this.isButtonDisabled = false
+      this.isSendButtonDisabled = false
     } else {
-      this.isButtonDisabled = true
+      this.isSendButtonDisabled = true
     }
   }
   sizeToFit() {

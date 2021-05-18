@@ -28,16 +28,16 @@ export class SpecialRequestFormComponent implements OnInit {
   }
   ngOnInit() {
     this.currentUser = this._dataService.getUser()
-    console.log(this.specialRequestItem)
   }
   onSubmit() {
     const data: ISpecialRequest = {
-      Item_ID: this.specialRequestItem.ID,
+      ID: this.specialRequestItem.ID,
       Quantity: Number(this.specialRequestForm.value.Quantity),
       Item: this.specialRequestItem.Item,
       Recent_CN: this.specialRequestItem.Recent_CN,
       Department: this.currentUser.department,
-      User_Name: this.currentUser.name,
+      User: this.currentUser.name,
+      Is_Confirmed: false
     }
     console.log(data)
     this._specialRequestService.createSpecialRequestItem(data).subscribe(response => alert(response.Item))

@@ -6,6 +6,7 @@ import { IUser } from 'src/app/shared/models/user.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
+import { StoreRoomSpecialRequestConfirmationComponent } from '../../departments/store-room-special-request-confirmation/store-room-special-request-confirmation.component';
 
 @Component({
   selector: 'app-store-room-special-request-form',
@@ -28,19 +29,17 @@ export class StoreRoomSpecialRequestFormComponent implements OnInit {
   }
   ngOnInit() {
     this.currentUser = this._dataService.getUser()
-    console.log(this.specialRequestItem)
   }
   onSubmit() {
     const data: ISpecialRequest = {
+      ID: this.specialRequestItem.ID,
       Item_ID: this.specialRequestItem.Item_ID,
       Quantity: Number(this.specialRequestForm.value.Quantity),
-      Item: this.specialRequestItem.Item,
-      Recent_CN: this.specialRequestItem.Recent_CN,
-      Is_Special_Request: this.specialRequestItem.Is_Special_Request,
       Department: this.currentUser.department,
-      User_Name: this.currentUser.name,
+      User: this.currentUser.name,
+      Is_Confirmed: false
     }
-    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => alert(response.Item))
+    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => response)
     this.onClose()
   }
   onClose() {

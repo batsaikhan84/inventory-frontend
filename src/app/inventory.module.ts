@@ -80,6 +80,11 @@ import { ChemicalFilterPipe } from './shared/custom-pipe/chemical-filter.pipe';
 import { StoreRoomDropdownRendererComponent } from './components/admin/store-room/store-room-dropdown-renderer/store-room-dropdown-renderer.component';
 import { StoreRoomSpecialRequestComponent } from './components/departments/store-room-special-request/store-room-special-request.component';
 import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-room-special-request-form/store-room-special-request-form.component';
+import { StoreRoomSpecialRequestStatusComponent } from './components/departments/store-room-special-request-status/store-room-special-request-status.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatStepperModule } from '@angular/material/stepper';
+import { StoreRoomSpecialRequestConfirmationComponent } from './components/departments/store-room-special-request-confirmation/store-room-special-request-confirmation.component';
+import { ConfirmationDialogComponent } from './components/departments/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -140,7 +145,10 @@ import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-r
     ChemicalFilterPipe,
     StoreRoomDropdownRendererComponent,
     StoreRoomSpecialRequestComponent,
-    StoreRoomSpecialRequestFormComponent
+    StoreRoomSpecialRequestFormComponent,
+    StoreRoomSpecialRequestStatusComponent,
+    StoreRoomSpecialRequestConfirmationComponent,
+    ConfirmationDialogComponent,
   ],
   exports: [
     MatChipsModule
@@ -170,6 +178,8 @@ import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-r
     MatCheckboxModule,
     MatSnackBarModule,
     MatChipsModule,
+    MatTabsModule,
+    MatStepperModule,
     AgGridModule.withComponents([ExtractionButtonRendererComponent,
                                   MassSpecButtonRendererComponent,
                                   ReceivingButtonRendererComponent,

@@ -11,7 +11,7 @@ import { DataService } from './data.service';
   providedIn: 'root'
 })
 export class AuthService implements OnInit {
-  private tokeExpirationTimer: any;
+  private tokenExpirationTimer: any;
   message: string = ''
   helper = new JwtHelperService();
   constructor(private _http: HttpClient,
@@ -32,17 +32,17 @@ export class AuthService implements OnInit {
     this._http.post('http://localhost:3000/auth/signup', user).subscribe()
   }
   autoLogout(expirationDuration: number) {
-    this.tokeExpirationTimer = setTimeout(()=> {
+    this.tokenExpirationTimer = setTimeout(()=> {
       this.logout();
     }, expirationDuration)
   }
   logout() {
     localStorage.removeItem('token')
     this._router.navigate([''])
-    if(this.tokeExpirationTimer) {
-      clearTimeout(this.tokeExpirationTimer)
+    if(this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer)
     }
-    this.tokeExpirationTimer = null
+    this.tokenExpirationTimer = null
   }
   getCurrentUser() {
     const token: string = localStorage.getItem('token') || ''

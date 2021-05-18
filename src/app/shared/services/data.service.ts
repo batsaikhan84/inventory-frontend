@@ -26,7 +26,6 @@ export class DataService implements OnInit {
 
   constructor(private extractionService: ExtractionService) { }
   ngOnInit() {
-    this.getUser()
   }
   updateCurrentItem(extractionMasterItem: IExtraction[]) {
     this.extractionMaster.next(extractionMasterItem)
