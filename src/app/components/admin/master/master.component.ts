@@ -120,13 +120,13 @@ export class MasterComponent implements OnInit {
   handleDelete() {
     this._masterService.deleteMasterItem(this.selectedItem.ID).subscribe({
       next: data => {
-        console.log(data)
+        this.getMasterInventory()
       },
       error: error => {
         console.error(error)
+        this.getMasterInventory()
       }
     })
-    this.getMasterInventory()
     this.isDeleteButtonDisabled = true
     this.isAssignButtonDisabled = true
   }

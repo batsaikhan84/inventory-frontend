@@ -21,9 +21,6 @@ export class AuthService implements OnInit {
   }
   signin(user: IUser) {
     return this._http.post('http://localhost:3000/auth/signin', user).pipe(map((response: any) => {
-      if(localStorage.getItem('token') && response.accessToken === localStorage.getItem('token')) {
-        return null
-      }
       const decodedToken = this.helper.decodeToken(response.accessToken)
       localStorage.setItem('token', response.accessToken)
       const tokenExpirationDate = decodedToken.exp * 1000 - new Date().getTime()
