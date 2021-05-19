@@ -1,3 +1,4 @@
+import { EmailService } from './../../../shared/services/email.service';
 import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
@@ -27,7 +28,8 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
               private authService: AuthService,
               private dialogService: DialogService,
               private confirmationDataService: ConfirmationDataService,
-              private statusDataService: StatusDataService) {
+              private statusDataService: StatusDataService,
+              private emailService: EmailService) {
   }
 
   ngOnInit(): void {
@@ -58,12 +60,14 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
   handleConfirmation() {
     this.dialogService.confirmationDialog("Please Cofirm your special request.").afterClosed().subscribe(res => {
       if(res === true) {
+        const itemsToEmail: ISpecialRequest[] = []
         this.selectedRows.map(selectedRow => {
           const data = {
             Is_Confirmed: true
           }
           this.specialRequestService.updateSpecialRequestItem(selectedRow.ID, data).subscribe({
-            next: () => {
+            next: (data) => {
+              itemsToEmail.push(data)
               this.getSpecialRequestItems() 
               this.getStatusItems()
               this.isButtonDisabled = true
@@ -71,6 +75,9 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
             error: error => error
           })
         })
+      this.emailService.sendSrSpecialRequestEmail({
+        confirmationItems: itemsToEmail, 
+        department: this.authService.getCurrentUser().department}).subscribe()
       }
     })
   }

@@ -14,6 +14,9 @@ export class SpecialRequestService {
   createSpecialRequestItem(data: ISpecialRequest) {
     return this._http.post<ISpecialRequest>(this.baseSpecialRequestUrl, data)
   }
+  createSrSpecialRequestItem(data: any) {
+    return this._http.post<ISpecialRequest>(this.baseSpecialRequestUrl, data)
+  }
   updateSpecialRequestItem(id: number, data: any) {
     return this._http.patch<ISpecialRequest>(`${this.baseSpecialRequestUrl}/${id}`, data)
   }
