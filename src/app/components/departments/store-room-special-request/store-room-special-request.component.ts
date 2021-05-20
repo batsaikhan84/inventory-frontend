@@ -4,10 +4,9 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AgGridAngular } from 'ag-grid-angular';
 import { IMaster } from 'src/app/shared/models/master.model';
 import { StoreRoomSpecialRequestFormComponent } from '../../forms/store-room-special-request-form/store-room-special-request-form.component';
-import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { ConfirmationDataService } from 'src/app/shared/services/confirmation-data.service';
+import { SrConfirmationDataService } from 'src/app/shared/services/sr-confirmation-data.service';
 
 @Component({
   selector: 'app-store-room-special-request',
@@ -20,7 +19,6 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
   isConfirmButtonDisabled: boolean = true
   selectedItem: IMaster;
   searchValue: string;
-  editText: string = 'Start Editing';
   gridApi: any;
   gridColumnApi: any;
   defaultColDef: any;
@@ -34,7 +32,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
               private storeRoomService: StoreRoomService,
               private specialRequestService: SpecialRequestService,
               private authService: AuthService,
-              private confirmationDataService: ConfirmationDataService) { 
+              private srConfirmationDataService: SrConfirmationDataService) { 
     this.context = { componentFromStoreRoomSpecialRequest: this }
   }
 
@@ -70,7 +68,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
           ...specialRequestItem,
           Item: specialRequestItem.master?.Item
         }))
-        this.confirmationDataService.updateCofirmationItems(confirmationData)
+        this.srConfirmationDataService.updateSrCofirmationItems(confirmationData)
       },
       error: error => error
     })
@@ -92,8 +90,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = "40%";
     dialogConfig.data = this.selectedItem
-    const currentDialog = this.dialog.open(StoreRoomSpecialRequestFormComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(() => {
+    this.dialog.open(StoreRoomSpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
       this.gridApi.deselectAll()
       this.getConfirmationItem()
     })  

@@ -1,12 +1,12 @@
-import { EmailService } from './../../../shared/services/email.service';
+import { EmailService } from '../../../../shared/services/email.service';
 import { Component, Input, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { ConfirmationDataService } from 'src/app/shared/services/confirmation-data.service';
+import { SrConfirmationDataService } from 'src/app/shared/services/sr-confirmation-data.service';
 import { DialogService } from 'src/app/shared/services/dialog.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
-import { StatusDataService } from 'src/app/shared/services/status-data.service';
+import { SrStatusDataService } from 'src/app/shared/services/sr-status-data.service';
 
 @Component({
   selector: 'app-store-room-special-request-confirmation',
@@ -27,14 +27,14 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
   constructor(private specialRequestService: SpecialRequestService,
               private authService: AuthService,
               private dialogService: DialogService,
-              private confirmationDataService: ConfirmationDataService,
-              private statusDataService: StatusDataService,
+              private srConfirmationDataService: SrConfirmationDataService,
+              private srStatusDataService: SrStatusDataService,
               private emailService: EmailService) {
   }
 
   ngOnInit(): void {
     this.getSpecialRequestItems()
-    this.confirmationDataService.currentConfirmationItems.subscribe(res => this.rowData = res)
+    this.srConfirmationDataService.currentSrConfirmationItems.subscribe(res => this.rowData = res)
     this.handleEditing()
     this.defaultColDef = { 
       resizable: true,
@@ -85,12 +85,15 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
     this.specialRequestService.getSpecialRequestItems().subscribe({
       next: data => {
         const statusData: any = data.filter(specialRequestItem => 
-        specialRequestItem.Is_Confirmed === true && specialRequestItem.Department === this.authService.getCurrentUser().department)
+        specialRequestItem.Is_Confirmed === true && 
+        specialRequestItem.Department === this.authService.getCurrentUser().department &&
+        specialRequestItem.Is_Store_Room_Item === true
+        )
         .map(statusItem => ({
           ...statusItem,
           Item: statusItem.master?.Item
         }))
-        this.statusDataService.updateCofirmationItems(statusData)
+        this.srStatusDataService.updateSrStatusItems(statusData)
       },
       error: error => error
     })
@@ -115,7 +118,7 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
           ...specialRequestItem,
           Item: specialRequestItem.master?.Item
         }))
-        this.confirmationDataService.updateCofirmationItems(confirmationData)
+        this.srConfirmationDataService.updateSrCofirmationItems(confirmationData)
       },
       error: error => error
     })

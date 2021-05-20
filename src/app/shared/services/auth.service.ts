@@ -5,6 +5,7 @@ import { IUser } from '../models/user.model';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { map } from 'rxjs/operators';
 import { DataService } from './data.service';
+import { IForgotPassword } from '../models/reset-password.model';
 
 
 @Injectable({
@@ -35,6 +36,9 @@ export class AuthService implements OnInit {
     this.tokenExpirationTimer = setTimeout(()=> {
       this.logout();
     }, expirationDuration)
+  }
+  forgotPassword(user: IForgotPassword) {
+    return this._http.post('http://localhost:3000/reset', user)
   }
   logout() {
     localStorage.removeItem('token')

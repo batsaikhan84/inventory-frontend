@@ -31,16 +31,15 @@ export class SpecialRequestFormComponent implements OnInit {
   }
   onSubmit() {
     const data: ISpecialRequest = {
-      ID: this.specialRequestItem.ID,
+      ID: 0,
       Quantity: Number(this.specialRequestForm.value.Quantity),
-      Item: this.specialRequestItem.Item,
-      Recent_CN: this.specialRequestItem.Recent_CN,
+      Item_ID: this.specialRequestItem.ID,
       Department: this.currentUser.department,
       User: this.currentUser.name,
-      Is_Confirmed: false
+      Is_Confirmed: false,
+      Is_Store_Room_Item: false
     }
-    console.log(data)
-    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => alert(response.Item))
+    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => response)
     this.onClose()
   }
   onClose() {

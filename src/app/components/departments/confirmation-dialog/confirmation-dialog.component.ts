@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { StoreRoomSpecialRequestConfirmationComponent } from '../store-room-special-request-confirmation/store-room-special-request-confirmation.component';
+import { StoreRoomSpecialRequestConfirmationComponent } from '../store-room-special-request/store-room-special-request-confirmation/store-room-special-request-confirmation.component';
 
 @Component({
   selector: 'app-confirmation-dialog',

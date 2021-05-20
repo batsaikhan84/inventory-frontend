@@ -2,7 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AgGridAngular } from 'ag-grid-angular';
 import { IMaster } from 'src/app/shared/models/master.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { MasterService } from 'src/app/shared/services/master.service';
+import { SpecialRequestConfirmationDataService } from 'src/app/shared/services/special-request-confirmation-data.service';
+import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { SpecialRequestFormComponent } from '../forms/special-request-form/special-request-form.component';
 
 @Component({
@@ -12,7 +15,7 @@ import { SpecialRequestFormComponent } from '../forms/special-request-form/speci
 })
 export class SpecialRequestComponent implements OnInit {
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
-  isButtonDisabled: boolean = true
+  isSendButtonDisabled: boolean = true
   selectedItem: IMaster;
   searchValue: string;
   editText: string = 'Start Editing';
@@ -22,7 +25,12 @@ export class SpecialRequestComponent implements OnInit {
   columnDefs: any;
   rowData: any;
 
-  constructor(private dialog: MatDialog, private masterService: MasterService) { }
+  constructor(private dialog: MatDialog, 
+              private masterService: MasterService,
+              private specialRequestService: SpecialRequestService,
+              private authService: AuthService,
+              private specialRequestConfirmationDataService: SpecialRequestConfirmationDataService
+              ) { }
 
   ngOnInit(): void {
     this.getMasterInventory()
@@ -56,8 +64,24 @@ export class SpecialRequestComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = "40%";
     dialogConfig.data = this.selectedItem
-    const currentDialog = this.dialog.open(SpecialRequestFormComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(result => this.gridApi.deselectAll())
+    this.dialog.open(SpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
+      this.gridApi.deselectAll()
+      this.getConfirmationItems()
+    })
+  }
+  getConfirmationItems(): void {
+    this.specialRequestService.getSpecialRequestItems().subscribe({
+      next: data => {
+        const confirmationData: any = data.filter(specialRequestItem => 
+         specialRequestItem.Is_Confirmed === false && specialRequestItem.Department === this.authService.getCurrentUser().department
+        ).map(specialRequestItem => ({
+          ...specialRequestItem,
+          Item: specialRequestItem.master?.Item
+        }))
+        this.specialRequestConfirmationDataService.updateCofirmationItems(confirmationData)
+      },
+      error: error => error
+    })
   }
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
@@ -66,9 +90,9 @@ export class SpecialRequestComponent implements OnInit {
       return node.data
     })
     if(getSelectedData.length > 0) {
-      this.isButtonDisabled = false
+      this.isSendButtonDisabled = false
     } else {
-      this.isButtonDisabled = true
+      this.isSendButtonDisabled = true
     }
   }
   sizeToFit() {

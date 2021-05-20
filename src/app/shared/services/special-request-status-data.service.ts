@@ -5,11 +5,12 @@ import { ISpecialRequest } from '../models/special-request.model';
 @Injectable({
   providedIn: 'root'
 })
-export class StatusDataService {
+export class SpecialRequestStatusDataService {
+  constructor() { }
+
   private statusItems = new BehaviorSubject<any>(undefined)
   currentStatusItems = this.statusItems.asObservable()
-  constructor() { }
-  updateCofirmationItems(cofirmationItems: ISpecialRequest) {
+  updateStatusItems(cofirmationItems: ISpecialRequest) {
     this.statusItems.next(cofirmationItems)
   }
 }

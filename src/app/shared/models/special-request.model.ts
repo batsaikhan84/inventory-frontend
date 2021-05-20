@@ -5,6 +5,7 @@ export interface ISpecialRequest {
     Item_ID?: number | undefined;
     Item?: string;
     Quantity: number;
+    Is_Store_Room_Item?: boolean;
     User: string;
     Recent_CN?: string;
     Department: string;

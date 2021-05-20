@@ -6,7 +6,6 @@ import { IUser } from 'src/app/shared/models/user.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
-import { StoreRoomSpecialRequestConfirmationComponent } from '../../departments/store-room-special-request-confirmation/store-room-special-request-confirmation.component';
 
 @Component({
   selector: 'app-store-room-special-request-form',
@@ -33,11 +32,12 @@ export class StoreRoomSpecialRequestFormComponent implements OnInit {
   onSubmit() {
     const data: ISpecialRequest = {
       ID: this.specialRequestItem.ID,
-      Item_ID: this.specialRequestItem.Item_ID,
       Quantity: Number(this.specialRequestForm.value.Quantity),
+      Item_ID: this.specialRequestItem.Item_ID,
       Department: this.currentUser.department,
       User: this.currentUser.name,
-      Is_Confirmed: false
+      Is_Confirmed: false,
+      Is_Store_Room_Item: true
     }
     this._specialRequestService.createSpecialRequestItem(data).subscribe(response => response)
     this.onClose()

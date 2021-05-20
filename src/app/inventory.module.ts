@@ -80,11 +80,15 @@ import { ChemicalFilterPipe } from './shared/custom-pipe/chemical-filter.pipe';
 import { StoreRoomDropdownRendererComponent } from './components/admin/store-room/store-room-dropdown-renderer/store-room-dropdown-renderer.component';
 import { StoreRoomSpecialRequestComponent } from './components/departments/store-room-special-request/store-room-special-request.component';
 import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-room-special-request-form/store-room-special-request-form.component';
-import { StoreRoomSpecialRequestStatusComponent } from './components/departments/store-room-special-request-status/store-room-special-request-status.component';
+import { StoreRoomSpecialRequestStatusComponent } from './components/departments/store-room-special-request/store-room-special-request-status/store-room-special-request-status.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
-import { StoreRoomSpecialRequestConfirmationComponent } from './components/departments/store-room-special-request-confirmation/store-room-special-request-confirmation.component';
+import { StoreRoomSpecialRequestConfirmationComponent } from './components/departments/store-room-special-request/store-room-special-request-confirmation/store-room-special-request-confirmation.component';
 import { ConfirmationDialogComponent } from './components/departments/confirmation-dialog/confirmation-dialog.component';
+import { SpecialRequestConfirmationComponent } from './components/special-request/special-request-confirmation/special-request-confirmation.component';
+import { SpecialRequestStatusComponent } from './components/special-request/special-request-status/special-request-status.component';
+import { ForgotPasswordFormComponent } from './components/forms/forgot-password-form/forgot-password-form.component';
+import { SigninFormComponent } from './components/forms/signin-form/signin-form.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +153,10 @@ import { ConfirmationDialogComponent } from './components/departments/confirmati
     StoreRoomSpecialRequestStatusComponent,
     StoreRoomSpecialRequestConfirmationComponent,
     ConfirmationDialogComponent,
+    SpecialRequestConfirmationComponent,
+    SpecialRequestStatusComponent,
+    ForgotPasswordFormComponent,
+    SigninFormComponent,
   ],
   exports: [
     MatChipsModule

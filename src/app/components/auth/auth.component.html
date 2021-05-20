@@ -2,21 +2,15 @@
     <h1>WELCOME TO THE USDTL INVENTORY SYSTEM</h1>
     <h2>A PROGRAM DESIGNED TO TRACK AND PROCURE INVENTORY</h2>
     <mat-divider></mat-divider>
-    <form class="add-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" style="width: 17em;">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" required>
-            <mat-error *ngIf="form.controls['username'].errors?.required">{{ getErrorMessage() }}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" style="width: 17em; margin: 0">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" required [type]="hide ? 'password' : 'text'">
-            <mat-error *ngIf="form.controls['password'].errors?.required">{{ getErrorMessage() }}</mat-error>
-            <mat-icon matSuffix (click)="hide = !hide" style="cursor: pointer;">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </mat-form-field>
-        <div>
-            <button mat-raised-button color="primary" style="width: 28em; height: 2em; font-size: large;" type="submit" [disabled]="form.invalid">Submit</button>
-        </div>        
-    </form>
+    <div *ngIf="!isForgotPassword">
+        <app-signin-form></app-signin-form >
+    </div>
+    <div *ngIf="isForgotPassword">
+        <app-forgot-password-form></app-forgot-password-form>
+    </div>
     <div style="margin-top: 2em; color: red;">{{ loginErrorMessage }}</div>
+    <div>
+        <button mat-button color="primary" style="margin-top: 2em; font-size: medium;" (click)="buttonTextToggle()">{{ buttonText }}</button>
+    </div>
+    
 </mat-grid-list>

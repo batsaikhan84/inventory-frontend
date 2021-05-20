@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
-import { StatusDataService } from 'src/app/shared/services/status-data.service';
+import { SrStatusDataService } from 'src/app/shared/services/sr-status-data.service';
 
 @Component({
   selector: 'app-store-room-special-request-status',
@@ -20,11 +20,11 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
 
   constructor(private specialRequestService: SpecialRequestService,
               private authService: AuthService,
-              private statusDataService: StatusDataService ) { }
+              private srStatusDataService: SrStatusDataService ) { }
 
   ngOnInit(): void {
     this.getStatusItems()
-    this.statusDataService.currentStatusItems.subscribe(res => this.rowData = res)
+    this.srStatusDataService.currentSrStatusItems.subscribe(res => this.rowData = res)
     this.handleEditing()
     this.defaultColDef = { 
       resizable: true,
@@ -51,12 +51,15 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
     this.specialRequestService.getSpecialRequestItems().subscribe({
       next: data => {
         const statusData: any = data.filter(specialRequestItem => 
-        specialRequestItem.Is_Confirmed === true && specialRequestItem.Department === this.authService.getCurrentUser().department)
+        specialRequestItem.Is_Confirmed === true && 
+        specialRequestItem.Department === this.authService.getCurrentUser().department &&
+        specialRequestItem.Is_Store_Room_Item === true
+        )
         .map(statusItem => ({
           ...statusItem,
           Item: statusItem.master?.Item
         }))
-        this.statusDataService.updateCofirmationItems(statusData)
+        this.srStatusDataService.updateSrStatusItems(statusData)
       },
       error: error => error
     })
