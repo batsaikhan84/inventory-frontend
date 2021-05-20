@@ -89,6 +89,7 @@ import { SpecialRequestConfirmationComponent } from './components/special-reques
 import { SpecialRequestStatusComponent } from './components/special-request/special-request-status/special-request-status.component';
 import { ForgotPasswordFormComponent } from './components/forms/forgot-password-form/forgot-password-form.component';
 import { SigninFormComponent } from './components/forms/signin-form/signin-form.component';
+import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { SigninFormComponent } from './components/forms/signin-form/signin-form.
     SpecialRequestStatusComponent,
     ForgotPasswordFormComponent,
     SigninFormComponent,
+    ResetPasswordComponent,
   ],
   exports: [
     MatChipsModule

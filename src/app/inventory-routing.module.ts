@@ -24,8 +24,10 @@ import { DepartmentsHomeComponent } from './components/departments/departments-h
 import { ExtractionDepartmentComponent } from './components/departments/extraction-department/extraction-department.component';
 import { MassSpecDepartmentComponent } from './components/departments/mass-spec-department/mass-spec-department.component';
 import { ReceivingDepartmentComponent } from './components/departments/receiving-department/receiving-department.component';
+import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
 
 const routes: Routes = [
+  { path: 'auth/reset-password', component: ResetPasswordComponent },
   { path: '', component: HomeComponent },
   { path: 'auth', component: AuthComponent, canActivate: [AuthGuard] },
   { path: 'chemical', component: ChemicalComponent , canActivate: [AuthGuard] },

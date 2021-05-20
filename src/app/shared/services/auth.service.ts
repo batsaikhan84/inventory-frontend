@@ -38,7 +38,10 @@ export class AuthService implements OnInit {
     }, expirationDuration)
   }
   forgotPassword(user: IForgotPassword) {
-    return this._http.post('http://localhost:3000/reset', user)
+    return this._http.post('http://localhost:3000/forgot', user)
+  }
+  resetPassword(password: string) {
+    return this._http.post('http://localhost:3000/auth/reset-password', password)
   }
   logout() {
     localStorage.removeItem('token')
