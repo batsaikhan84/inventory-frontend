@@ -35,8 +35,9 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'Item_ID', minWidth: 100, maxWidth: 110 },
+      {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 110 },
       {headerName: 'Item', field: 'Item', minWidth: 850},
+      {headerName: 'Item ID', field: 'Item_ID', width: 120},
       {headerName: 'Quantity', field: 'Quantity', minWidth: 220 },
       {headerName: 'Status', field: 'Status', minWidth: 220},
       {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 230,  valueFormatter: function(params: any) {
@@ -52,8 +53,8 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
       next: data => {
         const statusData: any = data.filter(specialRequestItem => 
         specialRequestItem.Is_Confirmed === true && 
-        specialRequestItem.Department === this.authService.getCurrentUser().department &&
-        specialRequestItem.Is_Store_Room_Item === true
+        specialRequestItem.Is_Store_Room_Item === true &&
+        specialRequestItem.Department === this.authService.getCurrentUser().department
         )
         .map(statusItem => ({
           ...statusItem,

@@ -51,8 +51,9 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'Item_ID', minWidth: 100, maxWidth: 110, checkboxSelection: true},
+      {headerName: 'ID', field: 'ID', maxWidth: 100, checkboxSelection: true},
       {headerName: 'Item', field: 'Item', minWidth: 450},
+      {headerName: 'Item ID', field: 'Item_ID', maxWidth: 100},
       {headerName: 'Recent CN', field: 'Recent_CN' },
       {headerName: 'Purchase Unit', field: 'Purchase_Unit'},
       {headerName: 'Part Number', field: 'Part_Number'},
@@ -75,9 +76,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
   }
   getMasterInventory(): void {
     this.storeRoomService.getStoreRoomMasterItems().subscribe({
-      next: data => this.rowData = data.filter(storeRoomItems => 
-        storeRoomItems.Is_Special_Request === true
-      ),
+      next: data => this.rowData = data,
       error: error => error
     })
   }

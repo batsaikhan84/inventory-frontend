@@ -1,4 +1,3 @@
-import { StoreRoomDropdownRendererComponent } from './store-room-dropdown-renderer/store-room-dropdown-renderer.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
@@ -10,7 +9,6 @@ import { StoreRoomService } from 'src/app/shared/services/store-room.service';
   styleUrls: ['./store-room.component.scss']
 })
 export class StoreRoomComponent implements OnInit {
-  frameworkComponents: any;
   rowDataClicked = {}
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
   searchValue: string = '';
@@ -21,9 +19,7 @@ export class StoreRoomComponent implements OnInit {
   rowData: any;
   context: any;
 
-  constructor(private storeRoomService: StoreRoomService, private needToOrderService: NeedToOrderService) { 
-    this.frameworkComponents = {dropdownRenderer: StoreRoomDropdownRendererComponent };
-  }
+  constructor(private storeRoomService: StoreRoomService, private needToOrderService: NeedToOrderService) { }
   ngOnInit(): void {
     this.getStoreRoomMaster()
     this.defaultColDef = { 
@@ -42,8 +38,9 @@ export class StoreRoomComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'ID', width: 100},
+      {headerName: 'ID', field: 'ID', minWidth: 100},
       {headerName: 'Item', field: 'Item', minWidth: 450},
+      {headerName: 'Item ID', field: 'Item_ID', minWidth: 100},
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
       {headerName: 'Part Number', field: 'Part_Number', minWidth: 150},
       {headerName: 'Recent CN', field: 'Recent_CN'},
@@ -56,9 +53,7 @@ export class StoreRoomComponent implements OnInit {
       {headerName: 'Max Quantity', field: 'Max_Quantity', editable: true,  'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Max_Quantity = Number(params.newValue)} },
       {headerName: 'Need To Order', cellStyle: this.needToOrderService.styleNeedToOrder, valueFormatter: this.needToOrderService.getNeedToOrderNumber},
       {headerName: 'Issued', field: 'Issued', editable: true},
-      {headerName: 'Received', field: 'Received', editable: true },
-      {headerName: 'Is Special Request Item', field: 'Is_Special_Request', minWidth: 150, cellRenderer: 'dropdownRenderer'
-      }
+      {headerName: 'Received', field: 'Received', editable: true }
     ]
   }
   sizeToFit() {

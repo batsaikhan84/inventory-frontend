@@ -104,7 +104,7 @@ export class MasterComponent implements OnInit {
     this.gridApi.setQuickFilter(value);
   }
   handleAssign(departmentName: string, isSpecialRequest: boolean = false) {
-    this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName, isSpecialRequest).subscribe(response => response)
+    this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName).subscribe(response => response)
     this.isDeleteButtonDisabled = true
     this.isAssignButtonDisabled = true
     this.gridApi.deselectAll();

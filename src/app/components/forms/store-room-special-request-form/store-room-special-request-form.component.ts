@@ -39,7 +39,7 @@ export class StoreRoomSpecialRequestFormComponent implements OnInit {
       Is_Confirmed: false,
       Is_Store_Room_Item: true
     }
-    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => response)
+    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => console.log(response))
     this.onClose()
   }
   onClose() {

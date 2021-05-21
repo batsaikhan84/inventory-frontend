@@ -30,7 +30,7 @@ export class SigninFormComponent implements OnInit {
           this.dataService.loginErrorMessage('')
           this.dataService.updateUser(data)
           if(data.role === 'admin') {
-            this._router.navigate(['/admin/master'])
+            this._router.navigate(['/admin/store-room'])
           } else {
             this._router.navigate(['/department/home'])
           }

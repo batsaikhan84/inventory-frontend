@@ -4,11 +4,11 @@ import { IMaster } from 'src/app/shared/models/master.model';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 
 @Component({
-  selector: 'app-admin-special-request',
-  templateUrl: './admin-special-request.component.html',
-  styleUrls: ['./admin-special-request.component.scss']
+  selector: 'app-admin-sr-special-request',
+  templateUrl: './admin-sr-special-request.component.html',
+  styleUrls: ['./admin-sr-special-request.component.scss']
 })
-export class AdminSpecialRequestComponent implements OnInit {
+export class AdminSrSpecialRequestComponent implements OnInit {
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
   isButtonDisabled: boolean;
   selectedItem: IMaster;
@@ -23,7 +23,7 @@ export class AdminSpecialRequestComponent implements OnInit {
   constructor(private _specialRequestService: SpecialRequestService) { }
 
   ngOnInit(): void {
-    this.getSpecialRequestItems()
+    this.getMasterInventory()
     this.isButtonDisabled = true
     this.defaultColDef = { 
       resizable: true,
@@ -33,10 +33,10 @@ export class AdminSpecialRequestComponent implements OnInit {
     }
     this.handleEditing()
   }
-  getSpecialRequestItems(): void {
+  getMasterInventory(): void {
     this._specialRequestService.getSpecialRequestItems().subscribe({
       next: data => {
-        const result = data.filter(item => item.Is_Store_Room_Item === false)
+        const result = data.filter(res => res.Is_Store_Room_Item === true)
         this.rowData = result
       },
       error: error => error
@@ -72,7 +72,7 @@ export class AdminSpecialRequestComponent implements OnInit {
     ]
   }
   onCellValueChanged(params: any) {
-    this._specialRequestService.updateSpecialRequestItem(params.data.ID, params.data).subscribe(response => this.getSpecialRequestItems())
+    this._specialRequestService.updateSpecialRequestItem(params.data.ID, params.data).subscribe(response => this.getMasterInventory())
   }
   sizeToFit() {
     this.gridApi.sizeColumnsToFit();

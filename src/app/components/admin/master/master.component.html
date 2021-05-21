@@ -22,12 +22,8 @@
         <mat-divider></mat-divider>
         <button mat-menu-item value="quality" (click)="handleAssign('quality')">Quality</button>
         <mat-divider></mat-divider>
-        <button mat-menu-item [matMenuTriggerFor]="isSpecialRequest">Store Room</button>
+        <button mat-menu-item value="quality" (click)="handleAssign('storeRoom')">Store Room</button>
     </mat-menu>
-    <mat-menu #isSpecialRequest="matMenu">
-        <button mat-menu-item (click)="handleAssign('storeRoom', false)">No Special Request Item</button>
-        <button mat-menu-item (click)="handleAssign('storeRoom', true)">Yes Special Request Item</button>
-      </mat-menu>
     <span class=spacer></span>
     <button mat-raised-button (click)="sizeToFit()">Size to Fit</button>
     <button mat-raised-button (click)="autoSizeAll(false)">Auto-Size All</button>

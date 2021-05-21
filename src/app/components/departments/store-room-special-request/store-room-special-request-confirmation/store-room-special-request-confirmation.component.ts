@@ -45,11 +45,12 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'Item_ID', minWidth: 100, maxWidth: 110, checkboxSelection: true, headerCheckboxSelection: true, },
-      {headerName: 'Item', field: 'Item', minWidth: 850},
-      {headerName: 'Quantity', field: 'Quantity', minWidth: 210, editable: true },
-      {headerName: 'Status', field: 'Status', minWidth: 210},
-      {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 210,  valueFormatter: function(params: any) {
+      {headerName: 'ID', field: 'ID', width: 120, checkboxSelection: true, headerCheckboxSelection: true, },
+      {headerName: 'Item', field: 'Item', minWidth: 700},
+      {headerName: 'Item_ID', field: 'Item_ID', width: 150},
+      {headerName: 'Quantity', field: 'Quantity', minWidth: 220, editable: true },
+      {headerName: 'Status', field: 'Status', minWidth: 220},
+      {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 220,  valueFormatter: function(params: any) {
         return new Date(params.data.Time_Requested).toLocaleDateString()
       }},
       {headerName: 'Time Updated', field: 'Time_Updated',  valueFormatter: function(params: any) {
@@ -86,8 +87,8 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
       next: data => {
         const statusData: any = data.filter(specialRequestItem => 
         specialRequestItem.Is_Confirmed === true && 
-        specialRequestItem.Department === this.authService.getCurrentUser().department &&
-        specialRequestItem.Is_Store_Room_Item === true
+        specialRequestItem.Is_Store_Room_Item === true &&
+        specialRequestItem.Department === this.authService.getCurrentUser().department
         )
         .map(statusItem => ({
           ...statusItem,

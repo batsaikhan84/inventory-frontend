@@ -77,7 +77,6 @@ import { ReceivingDepartmentComponent } from './components/departments/receiving
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { ChemicalFilterPipe } from './shared/custom-pipe/chemical-filter.pipe';
-import { StoreRoomDropdownRendererComponent } from './components/admin/store-room/store-room-dropdown-renderer/store-room-dropdown-renderer.component';
 import { StoreRoomSpecialRequestComponent } from './components/departments/store-room-special-request/store-room-special-request.component';
 import { StoreRoomSpecialRequestFormComponent } from './components/forms/store-room-special-request-form/store-room-special-request-form.component';
 import { StoreRoomSpecialRequestStatusComponent } from './components/departments/store-room-special-request/store-room-special-request-status/store-room-special-request-status.component';
@@ -90,6 +89,7 @@ import { SpecialRequestStatusComponent } from './components/special-request/spec
 import { ForgotPasswordFormComponent } from './components/forms/forgot-password-form/forgot-password-form.component';
 import { SigninFormComponent } from './components/forms/signin-form/signin-form.component';
 import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
+import { AdminSrSpecialRequestComponent } from './components/admin/admin-special-request/admin-sr-special-request/admin-sr-special-request.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +148,6 @@ import { ResetPasswordComponent } from './components/auth/reset/reset-password.c
     SignupFormComponent,
     ReceivingDepartmentComponent,
     ChemicalFilterPipe,
-    StoreRoomDropdownRendererComponent,
     StoreRoomSpecialRequestComponent,
     StoreRoomSpecialRequestFormComponent,
     StoreRoomSpecialRequestStatusComponent,
@@ -159,6 +158,7 @@ import { ResetPasswordComponent } from './components/auth/reset/reset-password.c
     ForgotPasswordFormComponent,
     SigninFormComponent,
     ResetPasswordComponent,
+    AdminSrSpecialRequestComponent,
   ],
   exports: [
     MatChipsModule

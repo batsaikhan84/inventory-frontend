@@ -4,7 +4,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SignupFormComponent } from '../forms/signup-form/signup-form.component';
-import { IUser } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-navbar',
