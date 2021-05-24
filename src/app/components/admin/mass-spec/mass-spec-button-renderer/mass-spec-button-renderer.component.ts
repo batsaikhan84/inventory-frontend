@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ICellRendererParams } from 'ag-grid-community';
 import { MassSpecQuantityComponent } from '../mass-spec-quantity/mass-spec-quantity.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-mass-spec-button-renderer',
@@ -12,7 +13,8 @@ import { MassSpecQuantityComponent } from '../mass-spec-quantity/mass-spec-quant
   styleUrls: ['./mass-spec-button-renderer.component.scss']
 })
 export class MassSpecButtonRendererComponent implements AgRendererComponent, ICellRendererAngularComp {
-  constructor(private dialog: MatDialog, private massSpecService: MassSpecService) { }
+  constructor(private dialog: MatDialog, private massSpecService: MassSpecService,
+              private snackbarService: SnackbarService) { }
   rowItem: IMassSpec;
   cellValue: number;
   params: ICellRendererParams;
@@ -33,7 +35,15 @@ export class MassSpecButtonRendererComponent implements AgRendererComponent, ICe
     dialogConfig.width = "50%";
     dialogConfig.data = {rowItem: this.rowItem}
     const currentDialog = this.dialog.open(MassSpecQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(result => this.params.context.massSpecCompoent.getMassSpecQuantity())
+    currentDialog.afterClosed().subscribe({
+      next: () => {
+        this.params.context.massSpecCompoent.getMassSpecQuantity()
+        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')
+      }
+    })
   }
   buttonClicked() {
     this.openDialog()

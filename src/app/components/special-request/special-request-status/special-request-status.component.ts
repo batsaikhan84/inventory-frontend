@@ -59,7 +59,8 @@ export class SpecialRequestStatusComponent implements OnInit {
         )
         .map(statusItem => ({
           ...statusItem,
-          Item: statusItem.master?.Item
+          Item: statusItem.master?.Item,
+          Recent_CN: statusItem.master?.Recent_CN
         }))
         this.specialRequestStatusDataService.updateStatusItems(statusData)
       },

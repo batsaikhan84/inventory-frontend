@@ -3,6 +3,8 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ISpecialRequest } from 'src/app/shared/models/special-request.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DialogService } from 'src/app/shared/services/dialog.service';
+import { EmailService } from 'src/app/shared/services/email.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { SpecialRequestConfirmationDataService } from 'src/app/shared/services/special-request-confirmation-data.service';
 import { SpecialRequestStatusDataService } from 'src/app/shared/services/special-request-status-data.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
@@ -28,7 +30,9 @@ export class SpecialRequestConfirmationComponent implements OnInit {
               private authService: AuthService,
               private dialogService: DialogService,
               private specialRequestConfirmationDataService: SpecialRequestConfirmationDataService,
-              private specialRequestStatusDataService: SpecialRequestStatusDataService
+              private specialRequestStatusDataService: SpecialRequestStatusDataService,
+              private snackbarService: SnackbarService,
+              private emailService: EmailService
               ) {
   }
 
@@ -61,10 +65,12 @@ export class SpecialRequestConfirmationComponent implements OnInit {
     this.specialRequestService.getSpecialRequestItems().subscribe({
       next: data => {
         const confirmationData: any = data.filter(specialRequestItem => 
-         specialRequestItem.Is_Confirmed === false && specialRequestItem.Department === this.authService.getCurrentUser().department
+         specialRequestItem.Is_Confirmed === false && 
+         specialRequestItem.Department === this.authService.getCurrentUser().department
         ).map(specialRequestItem => ({
           ...specialRequestItem,
-          Item: specialRequestItem.master?.Item
+          Item: specialRequestItem.master?.Item,
+          Recent_CN: specialRequestItem.master?.Recent_CN
         }))
         this.specialRequestConfirmationDataService.updateCofirmationItems(confirmationData)
       },
@@ -72,6 +78,9 @@ export class SpecialRequestConfirmationComponent implements OnInit {
     })
   }
   handleConfirmation() {
+    const itemsToEmail = this.selectedRows
+    let isError = false
+    const currentUser = this.authService.getCurrentUser()
     this.dialogService.confirmationDialog("Please Cofirm your special request.").afterClosed().subscribe(res => {
       if(res === true) {
         this.selectedRows.map(selectedRow => {
@@ -84,10 +93,47 @@ export class SpecialRequestConfirmationComponent implements OnInit {
               this.getStatusItems()
               this.isButtonDisabled = true
             },
-            error: error => error
+            error: () => {
+              isError = true
+              this.snackbarService.openSnackBar('Submission Failed', 'error')
+            }
+
           })
         })
       }
+      if(isError === false) {
+        this.emailService.sendSrSpecialRequestEmail({Items: itemsToEmail, User: currentUser, Type: 'General'}).subscribe()
+        this.snackbarService.openSnackBar('your special request submitted successfully', 'success')
+      } else {
+        this.snackbarService.openSnackBar('Submission Failed', 'error')
+      }
+    })
+  }
+  handleUpdate(value: any) {
+    this.specialRequestService.updateSpecialRequestItem(value.data.ID, value.data).subscribe({
+      next: () => {
+        this.snackbarService.openSnackBar('item quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('item quantity updated unsuccessfully', 'error')
+      }
+    })
+  }
+  handleDelete() {
+    this.dialogService.confirmationDialog("Please confirm your delete action.").afterClosed().subscribe({
+      next: (data) => {
+        if(data === true) {
+          this.selectedRows.map(item => {
+            this.specialRequestService.deleteItem(item.ID).subscribe({
+              next: () => this.snackbarService.openSnackBar(`ID: ${item.ID} item deleted successfully'`, 'success'),
+              error: () => this.snackbarService.openSnackBar(`ID: ${item.ID} item deleted unsuccessfully'`, 'error')
+            })
+          })
+          this.isButtonDisabled = true
+          this.getSpecialRequestItems()
+        }
+      },
+      error: (error) => error 
     })
   }
   getStatusItems(): void {
@@ -100,7 +146,8 @@ export class SpecialRequestConfirmationComponent implements OnInit {
         )
         .map(statusItem => ({
           ...statusItem,
-          Item: statusItem.master?.Item
+          Item: statusItem.master?.Item,
+          Recent_CN: statusItem.master?.Recent_CN
         }))
         this.specialRequestStatusDataService.updateStatusItems(statusData)
       },

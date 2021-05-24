@@ -7,5 +7,13 @@ html, body {
 body {
     box-sizing: border-box;
 }
+.error.mat-snack-bar-container {
+    background: #cc0000;
+    color: white
+}
+.success.mat-snack-bar-container {
+    background: #3cb371;
+    color: white;
+}
 
 

@@ -1,12 +1,11 @@
 <mat-toolbar color="primary" class="mat-elevation-z8">
-
   <img class="logo" src="../../../assets/images/Logo-USDTL-Only_Large.png" alt="">
 
-  <div class="store-room-special-request-nav" *ngIf="authService.isLoggedin() && authService.getCurrentUser().department === 'admin'">
-    <a mat-button color="primary" [routerLink]="['admin', 'store-room']" style="background-color: #ffffff; font-weight: 900;">{{  dataService.getUser().department | uppercase }}</a>
+  <div class="store-room-special-request-nav" *ngIf="authService.isLoggedin() && user && user.department === 'admin'">
+    <a mat-button color="primary" [routerLink]="['admin', 'store-room']" style="background-color: #ffffff; font-weight: 900;">{{ user ? user.department : null }}</a>
   </div>
-  <div class="store-room-special-request-nav" *ngIf="authService.isLoggedin() && authService.getCurrentUser().department !== 'admin'">
-    <a mat-button color="primary" [routerLink]="['department', 'home']" style="background-color: #ffffff; font-weight: 900;">{{  dataService.getUser().department | uppercase }}</a>
+  <div class="store-room-special-request-nav" *ngIf="authService.isLoggedin() && user && user.department !== 'admin'">
+    <a mat-button color="primary" [routerLink]="['department', 'home']" style="background-color: #ffffff; font-weight: 900;">{{ user ? user.department : null }}</a>
   </div>
   <div class="admin-nav" *ngIf="isAdmin()">
     <a mat-button color="basic" [routerLink]="['admin', 'master']">MASTER INVENTORY</a>
@@ -37,10 +36,10 @@
   <div class="rd-nav" *ngIf="isRd()">
     <a mat-button color="basic" [routerLink]="['department', 'rd-inventory']">INVENTORY</a>
   </div>
-  <div class="special-request-nav" *ngIf="dataService.getUser() && !isAdmin()">
+  <div class="special-request-nav" *ngIf="user && !isAdmin()">
     <a mat-button color="basic" [routerLink]="['department', 'special-request']">SPECIAL REQUEST</a>
   </div>
-  <div class="chemical-nav" *ngIf="dataService.getUser()">
+  <div class="chemical-nav" *ngIf="user">
     <a mat-button color="basic" [routerLink]="['chemical']">CHEMICAL</a>
   </div>
   <span class="fill-remaining-space"></span>

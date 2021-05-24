@@ -1,16 +1,11 @@
-<mat-grid-list cols="1">
-    <h1>WELCOME TO THE USDTL INVENTORY SYSTEM</h1>
-    <h2>A PROGRAM DESIGNED TO TRACK AND PROCURE INVENTORY</h2>
-    <mat-divider></mat-divider>
-    <div *ngIf="!isForgotPassword">
-        <app-signin-form></app-signin-form >
-    </div>
-    <div *ngIf="isForgotPassword">
-        <app-forgot-password-form></app-forgot-password-form>
-    </div>
-    <div style="margin-top: 2em; color: red;">{{ loginErrorMessage }}</div>
-    <div>
-        <button mat-button color="primary" style="margin-top: 2em; font-size: medium;" (click)="buttonTextToggle()">{{ buttonText }}</button>
-    </div>
+<div *ngIf="!isForgotPassword">
+    <app-signin-form></app-signin-form >
+</div>
+<div *ngIf="isForgotPassword">
+    <app-reset-password (resetPasswordEvent)="handleEventEmitter($event)"></app-reset-password>
+</div>
+<div style="margin-top: 2em; color: red;">{{ loginErrorMessage }}</div>
+<div>
+    <button mat-button color="primary" style="margin-top: 2em; font-size: medium;" (click)="buttonTextToggle()">{{ buttonText }}</button>
+</div>
     
-</mat-grid-list>

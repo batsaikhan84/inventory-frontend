@@ -5,6 +5,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AgRendererComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ReceivingQuantityComponent } from '../receiving-quantity/receiving-quantity.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-receiving-button-renderer',
@@ -12,7 +13,9 @@ import { ReceivingQuantityComponent } from '../receiving-quantity/receiving-quan
   styleUrls: ['./receiving-button-renderer.component.scss']
 })
 export class ReceivingButtonRendererComponent implements AgRendererComponent, ICellRendererAngularComp {
-  constructor(private dialog: MatDialog, private receivingService: ReceivingService) { }
+  constructor(private dialog: MatDialog, 
+              private receivingService: ReceivingService,
+              private snackbarService: SnackbarService) { }
   rowItem: IReceiving;
   cellValue: number;
   params: ICellRendererParams;
@@ -33,7 +36,15 @@ export class ReceivingButtonRendererComponent implements AgRendererComponent, IC
     dialogConfig.width = "50%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
     const currentDialog = this.dialog.open(ReceivingQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(() => this.params.context.receivingComponent.getReceivingQuantity())
+    currentDialog.afterClosed().subscribe({
+      next: () => {
+        () => this.params.context.receivingComponent.getReceivingQuantity()
+        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')
+      }
+    })
   }
   buttonClicked() {
     this.openDialog()

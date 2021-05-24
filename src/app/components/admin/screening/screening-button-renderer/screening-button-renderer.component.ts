@@ -5,6 +5,7 @@ import { AgRendererComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { ScreeningService } from 'src/app/shared/services/screening.service';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ScreeningQuantityComponent } from '../screening-quantity/screening-quantity.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-screening-button-renderer',
@@ -12,7 +13,9 @@ import { ScreeningQuantityComponent } from '../screening-quantity/screening-quan
   styleUrls: ['./screening-button-renderer.component.scss']
 })
 export class ScreeningButtonRendererComponent implements AgRendererComponent, ICellRendererAngularComp {
-  constructor(private dialog: MatDialog, private screeningService: ScreeningService) { }
+  constructor(private dialog: MatDialog, 
+              private screeningService: ScreeningService,
+              private snackbarService: SnackbarService) { }
   rowItem: IScreening;
   cellValue: number;
   params: ICellRendererParams;
@@ -32,8 +35,15 @@ export class ScreeningButtonRendererComponent implements AgRendererComponent, IC
     dialogConfig.autoFocus = true;
     dialogConfig.width = "50%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
-    const currentDialog = this.dialog.open(ScreeningQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(() => this.params.context.screeningComponent.getScreeningQuantity())
+    this.dialog.open(ScreeningQuantityComponent, dialogConfig).afterClosed().subscribe({
+      next: () => {
+        () => this.params.context.screeningComponent.getScreeningQuantity()
+        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')
+      }
+    })
   }
   buttonClicked() {
     this.openDialog()

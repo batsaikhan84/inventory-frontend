@@ -90,6 +90,7 @@ import { ForgotPasswordFormComponent } from './components/forms/forgot-password-
 import { SigninFormComponent } from './components/forms/signin-form/signin-form.component';
 import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
 import { AdminSrSpecialRequestComponent } from './components/admin/admin-special-request/admin-sr-special-request/admin-sr-special-request.component';
+import { SnackbarComponent } from './shared/shareComponents/snackbar/snackbar.component';
 
 @NgModule({
   declarations: [
@@ -159,6 +160,8 @@ import { AdminSrSpecialRequestComponent } from './components/admin/admin-special
     SigninFormComponent,
     ResetPasswordComponent,
     AdminSrSpecialRequestComponent,
+    SnackbarComponent,
+    StatusRendererComponent
   ],
   exports: [
     MatChipsModule

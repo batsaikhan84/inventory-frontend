@@ -4,6 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog'
 import { FormComponent } from '../../forms/new-item-form/form.component';
 import { MasterService } from '../../../shared/services/master.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-master',
@@ -25,7 +26,9 @@ export class MasterComponent implements OnInit {
   columnDefs: any;
   rowData: any;
 
-  constructor(private dialog: MatDialog, private _masterService: MasterService) { }
+  constructor(private dialog: MatDialog,
+              private _masterService: MasterService,
+              private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
     this.getMasterInventory()
@@ -44,10 +47,15 @@ export class MasterComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
-    const currentDialog = this.dialog.open(FormComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(result => 
-      this.getMasterInventory()
-    )
+    this.dialog.open(FormComponent, dialogConfig).afterClosed().subscribe({
+      next: () => {
+        this.snackbarService.openSnackBar('your item added successfully', 'success')
+        this.getMasterInventory()
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('your item added unsuccessfully', 'error')
+      }
+    })
   }
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
@@ -103,27 +111,32 @@ export class MasterComponent implements OnInit {
   handleSearch(value: string) {
     this.gridApi.setQuickFilter(value);
   }
-  handleAssign(departmentName: string, isSpecialRequest: boolean = false) {
-    this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName).subscribe(response => response)
+  handleAssign(departmentName: string) {
+    this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName).subscribe({
+      next: (data) => {
+        console.log(data)
+        this.snackbarService.openSnackBar(`item assigned to ${ departmentName } successfully`, 'success')
+      },
+      error: () => this.snackbarService.openSnackBar('item assigned unsuccessfully', 'error')
+    })
     this.isDeleteButtonDisabled = true
     this.isAssignButtonDisabled = true
     this.gridApi.deselectAll();
   }
   handleUpdate(value: any) {
     this._masterService.updateMasterItem(value.data.ID , value.data, '').subscribe({
-      next: data => console.log(data),
-      error: error => {
-        console.error(error)
-      }
+      next: data => this.snackbarService.openSnackBar('value updated successfully', 'success'),
+      error: () => this.snackbarService.openSnackBar('value updated unsuccessfully', 'error')
     })
   }
   handleDelete() {
     this._masterService.deleteMasterItem(this.selectedItem.ID).subscribe({
       next: data => {
         this.getMasterInventory()
+        this.snackbarService.openSnackBar('item deleted successfully', 'success')
       },
       error: error => {
-        console.error(error)
+        this.snackbarService.openSnackBar('item deleted unsuccessfully', 'error')
         this.getMasterInventory()
       }
     })

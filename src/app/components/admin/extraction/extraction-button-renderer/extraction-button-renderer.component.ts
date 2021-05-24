@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AgRendererComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-extraction-button-renderer',
@@ -12,7 +13,9 @@ import { ICellRendererParams } from 'ag-grid-community';
   styleUrls: ['./extraction-button-renderer.component.scss']
 })
 export class ExtractionButtonRendererComponent implements AgRendererComponent, ICellRendererAngularComp {
-  constructor(private dialog: MatDialog, private extractionService: ExtractionService) { }
+  constructor(private dialog: MatDialog, 
+              private extractionService: ExtractionService,
+              private snackbarService: SnackbarService) { }
   rowItem: IExtraction;
   cellValue: number;
   params: ICellRendererParams;
@@ -34,10 +37,16 @@ export class ExtractionButtonRendererComponent implements AgRendererComponent, I
     dialogConfig.autoFocus = true;
     dialogConfig.width = "50%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
-    const currentDialog = this.dialog.open(ExtractionQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(result => 
-      this.params.context.extractionComponent.getExtractionQuantity()
-    )}
+    this.dialog.open(ExtractionQuantityComponent, dialogConfig).afterClosed().subscribe({
+      next: () => {
+        this.params.context.extractionComponent.getExtractionQuantity() 
+        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')
+      }
+    })
+  }
   buttonClicked() {
     this.openDialog()
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { StoreRoomService } from 'src/app/shared/services/store-room.service';
 
 @Component({
@@ -19,7 +20,9 @@ export class StoreRoomComponent implements OnInit {
   rowData: any;
   context: any;
 
-  constructor(private storeRoomService: StoreRoomService, private needToOrderService: NeedToOrderService) { }
+  constructor(private storeRoomService: StoreRoomService, 
+              private needToOrderService: NeedToOrderService,
+              private snackbarService: SnackbarService) { }
   ngOnInit(): void {
     this.getStoreRoomMaster()
     this.defaultColDef = { 
@@ -85,7 +88,7 @@ export class StoreRoomComponent implements OnInit {
     if(params.column.colId === 'Issued') {
       const Quantity = params.data.Quantity - Number(params.newValue)
       if(Quantity < 0) {
-        alert('cannot issue more than total on hand')
+        this.snackbarService.openSnackBar('cannot issue more than total on hand', 'error')
         this.getStoreRoomMaster()
         return
       }
@@ -95,7 +98,6 @@ export class StoreRoomComponent implements OnInit {
       const Quantity = params.data.Quantity + Number(params.newValue)
       const Received = 0
       data = {...params.data, Quantity, Received}
-      console.log(data)
     } else {
       data = {...params.data}
     }

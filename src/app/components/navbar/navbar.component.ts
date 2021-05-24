@@ -1,9 +1,9 @@
 import { DataService } from 'src/app/shared/services/data.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SignupFormComponent } from '../forms/signup-form/signup-form.component';
+import { IUser } from 'src/app/shared/models/user.model';
 
 @Component({
   selector: 'app-navbar',
@@ -11,12 +11,15 @@ import { SignupFormComponent } from '../forms/signup-form/signup-form.component'
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  user: IUser
   constructor(public authService: AuthService,
               public dataService: DataService, 
-              private router: Router, 
               private dialog: MatDialog) {
   }
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.user = this.authService.getCurrentUser()
+    console.log(this.user)
+  }
   handleLogout() {
     this.authService.logout()
   }
@@ -31,30 +34,57 @@ export class NavbarComponent implements OnInit {
     this.dialog.open(SignupFormComponent, dialogConfig)
   }
   isAdmin(): boolean {
-    return this.authService.getCurrentUser().role === "admin" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.role === "admin" ? true : false
   }
   isExtraction(): boolean {
-    return this.authService.getCurrentUser().department === "extraction" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "extraction" ? true : false
   }
   isMassSpec(): boolean {
-    return this.authService.getCurrentUser().department === "massSpec" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "massSpec" ? true : false
   }
   isReceiving(): boolean {
-    return this.authService.getCurrentUser().department=== "receiving" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department=== "receiving" ? true : false
   }
   isScreening(): boolean {
-    return this.authService.getCurrentUser().department === "screening" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "screening" ? true : false
   }
   isRd(): boolean {
-    return this.authService.getCurrentUser().department === "rd" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "rd" ? true : false
   }
   isQuality(): boolean {
-    return this.authService.getCurrentUser().department === "quality" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "quality" ? true : false
   }
   isSafety(): boolean {
-    return this.authService.getCurrentUser().department === "safety" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "safety" ? true : false
   }
   isIt(): boolean {
-    return this.authService.getCurrentUser().department === "it" ? true : false
+    if(!this.user) {
+      return null
+    }
+    return this.user.department === "it" ? true : false
   }
 }

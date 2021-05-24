@@ -27,7 +27,7 @@ export class SpecialRequestFormComponent implements OnInit {
     this.specialRequestItem = data
   }
   ngOnInit() {
-    this.currentUser = this._dataService.getUser()
+    
   }
   onSubmit() {
     const data: ISpecialRequest = {

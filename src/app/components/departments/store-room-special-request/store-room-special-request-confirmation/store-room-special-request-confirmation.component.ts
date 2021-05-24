@@ -7,6 +7,7 @@ import { SrConfirmationDataService } from 'src/app/shared/services/sr-confirmati
 import { DialogService } from 'src/app/shared/services/dialog.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { SrStatusDataService } from 'src/app/shared/services/sr-status-data.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-store-room-special-request-confirmation',
@@ -29,7 +30,8 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
               private dialogService: DialogService,
               private srConfirmationDataService: SrConfirmationDataService,
               private srStatusDataService: SrStatusDataService,
-              private emailService: EmailService) {
+              private emailService: EmailService,
+              private snackbarService: SnackbarService) {
   }
 
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
     this.columnDefs = [
       {headerName: 'ID', field: 'ID', width: 120, checkboxSelection: true, headerCheckboxSelection: true, },
       {headerName: 'Item', field: 'Item', minWidth: 700},
-      {headerName: 'Item_ID', field: 'Item_ID', width: 150},
+      {headerName: 'Item_ID', field: 'Item_ID', minWidth: 150},
       {headerName: 'Quantity', field: 'Quantity', minWidth: 220, editable: true },
       {headerName: 'Status', field: 'Status', minWidth: 220},
       {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 220,  valueFormatter: function(params: any) {
@@ -59,9 +61,11 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
     ]
   }
   handleConfirmation() {
-    this.dialogService.confirmationDialog("Please Cofirm your special request.").afterClosed().subscribe(res => {
+    const itemsToEmail: ISpecialRequest[] = []
+    let isError = false
+    const currentUser = this.authService.getCurrentUser()
+    this.dialogService.confirmationDialog("Please confirm your special request.").afterClosed().subscribe(res => {
       if(res === true) {
-        const itemsToEmail: ISpecialRequest[] = []
         this.selectedRows.map(selectedRow => {
           const data = {
             Is_Confirmed: true
@@ -73,13 +77,47 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
               this.getStatusItems()
               this.isButtonDisabled = true
             },
-            error: error => error
+            error: () => {
+              isError = true
+              this.snackbarService.openSnackBar('Submission Failed', 'error')
+            }
+
           })
         })
-      this.emailService.sendSrSpecialRequestEmail({
-        confirmationItems: itemsToEmail, 
-        department: this.authService.getCurrentUser().department}).subscribe()
       }
+      if(isError === false) {
+        this.emailService.sendSrSpecialRequestEmail({Items: itemsToEmail, User: currentUser, Type: 'Store Room'}).subscribe()
+        this.snackbarService.openSnackBar('Your store room special Request submitted successfully', 'success')
+      } else {
+        this.snackbarService.openSnackBar('Submission Failed', 'error')
+      }
+    })
+  }
+  handleUpdate(value: any) {
+    this.specialRequestService.updateSpecialRequestItem(value.data.ID, value.data).subscribe({
+      next: () => {
+        this.snackbarService.openSnackBar('item quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('item quantity updated unsuccessfully', 'error')
+      }
+    })
+  }
+  handleDelete() {
+    this.dialogService.confirmationDialog("Please confirm your delete action.").afterClosed().subscribe({
+      next: (data) => {
+        if(data === true) {
+          this.selectedRows.map(item => {
+            this.specialRequestService.deleteItem(item.ID).subscribe({
+              next: () => this.snackbarService.openSnackBar(`selected items deleted successfully'`, 'success'),
+              error: () => this.snackbarService.openSnackBar(`selected items deleted unsuccessfully'`, 'error')
+            })
+          })
+          this.isButtonDisabled = true
+          this.getSpecialRequestItems()
+        }
+      },
+      error: (error) => error 
     })
   }
   getStatusItems(): void {
@@ -92,7 +130,8 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
         )
         .map(statusItem => ({
           ...statusItem,
-          Item: statusItem.master?.Item
+          Item: statusItem.master?.Item,
+          Recent_CN: statusItem.master?.Recent_CN
         }))
         this.srStatusDataService.updateSrStatusItems(statusData)
       },
@@ -117,7 +156,8 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
          specialRequestItem.Is_Confirmed === false && specialRequestItem.Department === this.authService.getCurrentUser().department
         ).map(specialRequestItem => ({
           ...specialRequestItem,
-          Item: specialRequestItem.master?.Item
+          Item: specialRequestItem.master?.Item,
+          Recent_CN: specialRequestItem.master?.Recent_CN
         }))
         this.srConfirmationDataService.updateSrCofirmationItems(confirmationData)
       },

@@ -31,4 +31,7 @@ export class AuthComponent implements OnInit {
       this.loginErrorMessage = ''
     }
   }
+  handleEventEmitter($event: boolean) {
+    this.isForgotPassword = $event
+  }
 }

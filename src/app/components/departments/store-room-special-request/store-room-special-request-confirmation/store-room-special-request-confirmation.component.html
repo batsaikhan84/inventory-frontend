@@ -1,6 +1,9 @@
 <mat-toolbar color='primary'>
     <span></span>
     <span class="spacer"></span>
+    <button mat-icon-button color="warn" style="margin: 0 1.5em;" [disabled]="isButtonDisabled" (click)="handleDelete()">
+      <mat-icon  style="font-size: 2.7em;">delete</mat-icon>
+  </button>
     <button mat-raised-button color="accent" [disabled]="isButtonDisabled" (click)="handleConfirmation()">CONFIRM</button>
   </mat-toolbar>
 <ag-grid-angular
@@ -19,4 +22,5 @@
     [paginationPageSize]=50
     rowSelection="multiple"
     (selectionChanged)="getSelectedRows()"
+    (cellValueChanged)="handleUpdate($event)"
 ></ag-grid-angular>

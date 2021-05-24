@@ -4,6 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { IMaster } from 'src/app/shared/models/master.model';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { MasterService } from 'src/app/shared/services/master.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { SpecialRequestConfirmationDataService } from 'src/app/shared/services/special-request-confirmation-data.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { SpecialRequestFormComponent } from '../forms/special-request-form/special-request-form.component';
@@ -29,7 +30,8 @@ export class SpecialRequestComponent implements OnInit {
               private masterService: MasterService,
               private specialRequestService: SpecialRequestService,
               private authService: AuthService,
-              private specialRequestConfirmationDataService: SpecialRequestConfirmationDataService
+              private specialRequestConfirmationDataService: SpecialRequestConfirmationDataService,
+              private snackbarService: SnackbarService
               ) { }
 
   ngOnInit(): void {
@@ -67,6 +69,7 @@ export class SpecialRequestComponent implements OnInit {
     this.dialog.open(SpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
       this.gridApi.deselectAll()
       this.getConfirmationItems()
+      this.snackbarService.openSnackBar('Please confirm your request in step 2', 'success')
     })
   }
   getConfirmationItems(): void {
@@ -76,7 +79,8 @@ export class SpecialRequestComponent implements OnInit {
          specialRequestItem.Is_Confirmed === false && specialRequestItem.Department === this.authService.getCurrentUser().department
         ).map(specialRequestItem => ({
           ...specialRequestItem,
-          Item: specialRequestItem.master?.Item
+          Item: specialRequestItem.master?.Item,
+          Recent_CN: specialRequestItem.master?.Recent_CN
         }))
         this.specialRequestConfirmationDataService.updateCofirmationItems(confirmationData)
       },

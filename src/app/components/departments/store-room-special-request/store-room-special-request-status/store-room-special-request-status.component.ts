@@ -37,7 +37,7 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
     this.columnDefs = [
       {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 110 },
       {headerName: 'Item', field: 'Item', minWidth: 850},
-      {headerName: 'Item ID', field: 'Item_ID', width: 120},
+      {headerName: 'Item ID', field: 'Item_ID', minWidth: 120},
       {headerName: 'Quantity', field: 'Quantity', minWidth: 220 },
       {headerName: 'Status', field: 'Status', minWidth: 220},
       {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 230,  valueFormatter: function(params: any) {
@@ -58,7 +58,8 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
         )
         .map(statusItem => ({
           ...statusItem,
-          Item: statusItem.master?.Item
+          Item: statusItem.master?.Item,
+          Recent_CN: statusItem.master?.Recent_CN
         }))
         this.srStatusDataService.updateSrStatusItems(statusData)
       },

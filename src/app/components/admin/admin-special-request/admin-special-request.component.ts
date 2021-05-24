@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { IMaster } from 'src/app/shared/models/master.model';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
+import { StatusRendererComponent } from './status-renderer/status-renderer.component';
 
 @Component({
   selector: 'app-admin-special-request',
@@ -19,8 +20,11 @@ export class AdminSpecialRequestComponent implements OnInit {
   defaultColDef: any;
   columnDefs: any;
   rowData: any;
+  frameworkComponents: any;
 
-  constructor(private _specialRequestService: SpecialRequestService) { }
+  constructor(private _specialRequestService: SpecialRequestService) { 
+    this.frameworkComponents = { dropdownRenderer: StatusRendererComponent }
+  }
 
   ngOnInit(): void {
     this.getSpecialRequestItems()
@@ -60,9 +64,9 @@ export class AdminSpecialRequestComponent implements OnInit {
       {headerName: 'Item', field: 'Item', minWidth: 450},
       {headerName: 'Quantity', field: 'Quantity'},
       {headerName: 'Department', field: 'Department'},
-      {headerName: 'Status', field: 'Status', cellStyle: { 'background-color': 'lightblue', 'font-weight': 600 }, editable: true, cellEditor: 'agSelectCellEditor', 
-        cellEditorParams: { values: ['Completed', 'Pending', 'Cancelled', 'Ordered', 'Back Ordered' ] }
-      },
+      {headerName: 'Status', field: 'Status', 
+        cellStyle: { 'background-color': 'lightblue', 'font-weight': 600 }, 
+        cellRenderer: 'dropdownRenderer' },
       {headerName: 'Time Requested', field: 'Time_Requested', valueFormatter: function(params: any) {
         return new Date(params.data.Time_Requested).toLocaleDateString()
       }},

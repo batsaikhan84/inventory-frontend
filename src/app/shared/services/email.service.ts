@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class EmailService {
- baseUrl = 'http://localhost:3000/email'
+ baseUrl = 'http://localhost:3000/email/special-request'
   constructor(private _http: HttpClient) { }
   sendSrSpecialRequestEmail(specialRequestItems: any) {
     return this._http.post(this.baseUrl, specialRequestItems)

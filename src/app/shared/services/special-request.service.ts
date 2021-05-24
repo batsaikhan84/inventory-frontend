@@ -20,4 +20,7 @@ export class SpecialRequestService {
   updateSpecialRequestItem(id: number, data: any) {
     return this._http.patch<ISpecialRequest>(`${this.baseSpecialRequestUrl}/${id}`, data)
   }
+  deleteItem(id: number) {
+    return this._http.delete<ISpecialRequest>(`${this.baseSpecialRequestUrl}/${id}`)
+  }
 }

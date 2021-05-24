@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IExtraction } from 'src/app/shared/models/extraction.model';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { ExtractionService } from '../../../../shared/services/extraction.service';
 
 @Component({
@@ -17,7 +18,8 @@ export class ExtractionQuantityComponent implements OnInit {
   defaultColDef: any
   constructor(private extractionService: ExtractionService, 
               private dialog: MatDialogRef<ExtractionQuantityComponent>, 
-              @Inject(MAT_DIALOG_DATA) public data: any) { 
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private snackbarService: SnackbarService) { 
     this.rowItem = data.rowItem
   }
   ngOnInit(): void {
@@ -47,6 +49,9 @@ export class ExtractionQuantityComponent implements OnInit {
   }
   handleUpdate(value: any) {
     this.extractionService.updateExtractionItem(value.data.ID, value.data).subscribe(response => 
-      this.extractionService.getExtractionMasterItem(response.Item_ID).subscribe(response => this.rowItem = response)
+      this.extractionService.getExtractionMasterItem(response.Item_ID).subscribe(response => {
+        this.rowItem = response
+      })
+    
   )}
 }

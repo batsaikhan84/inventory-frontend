@@ -5,6 +5,7 @@ import { AgRendererComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { RdService } from 'src/app/shared/services/rd.service';
 import { ICellRendererParams } from 'ag-grid-community';
 import { RdQuantityComponent } from '../rd-quantity/rd-quantity.component';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-rd-button-renderer',
@@ -12,7 +13,9 @@ import { RdQuantityComponent } from '../rd-quantity/rd-quantity.component';
   styleUrls: ['./rd-button-renderer.component.scss']
 })
 export class RdButtonRendererComponent implements AgRendererComponent, ICellRendererAngularComp {
-  constructor(private dialog: MatDialog, private rdService: RdService) { }
+  constructor(private dialog: MatDialog, 
+              private rdService: RdService,
+              private snackbarService: SnackbarService) { }
   rowItem: IRd;
   cellValue: number;
   params: ICellRendererParams;
@@ -33,7 +36,15 @@ export class RdButtonRendererComponent implements AgRendererComponent, ICellRend
     dialogConfig.width = "50%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
     const currentDialog = this.dialog.open(RdQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(() => this.params.context.rdComponent.getRdQuantity())
+    currentDialog.afterClosed().subscribe({
+      next: () => {
+        () => this.params.context.rdComponent.getRdQuantity()
+        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
+      },
+      error: () => {
+        this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')
+      }
+    })
   }
   buttonClicked() {
     this.openDialog()

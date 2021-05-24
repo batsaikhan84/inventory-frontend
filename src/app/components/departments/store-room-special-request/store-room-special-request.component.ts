@@ -7,6 +7,7 @@ import { StoreRoomSpecialRequestFormComponent } from '../../forms/store-room-spe
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SrConfirmationDataService } from 'src/app/shared/services/sr-confirmation-data.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-store-room-special-request',
@@ -32,7 +33,8 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
               private storeRoomService: StoreRoomService,
               private specialRequestService: SpecialRequestService,
               private authService: AuthService,
-              private srConfirmationDataService: SrConfirmationDataService) { 
+              private srConfirmationDataService: SrConfirmationDataService,
+              private snackbarService: SnackbarService) { 
     this.context = { componentFromStoreRoomSpecialRequest: this }
   }
 
@@ -67,7 +69,8 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
          specialRequestItem.Is_Confirmed === false && specialRequestItem.Department === this.authService.getCurrentUser().department
         ).map(specialRequestItem => ({
           ...specialRequestItem,
-          Item: specialRequestItem.master?.Item
+          Item: specialRequestItem.master?.Item,
+          Recent_CN: specialRequestItem.master?.Recent_CN
         }))
         this.srConfirmationDataService.updateSrCofirmationItems(confirmationData)
       },
@@ -92,6 +95,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     this.dialog.open(StoreRoomSpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
       this.gridApi.deselectAll()
       this.getConfirmationItem()
+      this.snackbarService.openSnackBar('Please confirm your request in step 2', 'success')
     })  
   }
   getSelectedRows() {
