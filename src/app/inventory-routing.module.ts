@@ -25,6 +25,7 @@ import { ExtractionDepartmentComponent } from './components/departments/extracti
 import { MassSpecDepartmentComponent } from './components/departments/mass-spec-department/mass-spec-department.component';
 import { ReceivingDepartmentComponent } from './components/departments/receiving-department/receiving-department.component';
 import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
+import { AdminSrSpecialRequestComponent } from './components/admin/admin-special-request/admin-sr-special-request/admin-sr-special-request.component';
 
 const routes: Routes = [
   { path: 'auth/reset-password', component: ResetPasswordComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
     children: [
       { path: 'master', component: MasterComponent},
       { path: 'extraction', component: ExtractionComponent },
-      { path: 'special-request', component: AdminSpecialRequestComponent},
+      { path: 'store-room-special-request', component: AdminSrSpecialRequestComponent},
+      { path: 'general-special-request', component: AdminSpecialRequestComponent},
       { path: 'mass-spec', component: MassSpecComponent},
       { path: 'receiving', component: ReceivingComponent},
       { path: 'store-room', component: StoreRoomComponent},
@@ -54,7 +56,6 @@ const routes: Routes = [
       { path: 'rd', component: RdDepartmentComponent},
       { path: 'quality', component: QualityDepartmentComponent},
       { path: 'safety', component: SafetyDepartmentComponent},
-      // canActivate: [AuthGuard]
     ]},
 ];
 

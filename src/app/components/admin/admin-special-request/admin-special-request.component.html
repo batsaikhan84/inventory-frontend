@@ -7,30 +7,26 @@
         <mat-icon matSuffix (click)="onSearchClear()" *ngIf="!searchValue">search</mat-icon>
     </mat-form-field>
     <span class=spacer></span>
-    <mat-card style="padding: 2px 10px; background-color: #673ab7; color: white;">SPECIAL REQUEST</mat-card>
+    <mat-card style="padding: 2px 10px; background-color: #673ab7; color: white;">GENERAL REQUEST</mat-card>
 </mat-toolbar>
-<mat-tab-group mat-stretch-tabs color="accent" backgroundColor="primary">
-    <mat-tab label="GENERAL SPECIAL REQUEST LIST"> <ag-grid-angular
-        #agGrid
-        id='masterInventoryGrid'
-        style="width: 100%; height: 55em;"
-        [headerHeight]=50
-        [defaultColDef] = "defaultColDef"
-        class='ag-theme-alpine'
-        [rowData]='rowData'
-        [columnDefs]='columnDefs'
-        rowSelection="single"
-        (selectionChanged)="getSelectedRows()"
-        (firstDataRendered)="onFirstDataRendered($event)"
-        (cellValueChanged)="onCellValueChanged($event)"
-        (gridReady)="onGridReady($event)"
-        [pagination]="true"
-        [animateRows]="true"
-        [paginationPageSize]=50
-        (cellValueChanged)="handleUpdate($event)"
-        [frameworkComponents]="frameworkComponents"
-    ></ag-grid-angular> </mat-tab>
-    <mat-tab label="STORE ROOM SPECIAL REQUEST LIST">
-        <app-admin-sr-special-request></app-admin-sr-special-request>
-    </mat-tab>
-  </mat-tab-group>
+<ag-grid-angular
+    #agGrid
+    id='masterInventoryGrid'
+    style="width: 100%; height: 55em;"
+    [headerHeight]=50
+    [defaultColDef] = "defaultColDef"
+    class='ag-theme-alpine'
+    [rowData]='rowData'
+    [columnDefs]='columnDefs'
+    rowSelection="single"
+    (selectionChanged)="getSelectedRows()"
+    (firstDataRendered)="onFirstDataRendered($event)"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (gridReady)="onGridReady($event)"
+    [pagination]="true"
+    [animateRows]="true"
+    [paginationPageSize]=50
+    (cellValueChanged)="handleUpdate($event)"
+    [frameworkComponents]="frameworkComponents"
+></ag-grid-angular>
+

@@ -15,7 +15,11 @@
       <button mat-menu-item [routerLink]="['admin', 'rd']">R&D</button> 
       <button mat-menu-item [routerLink]="['admin', 'quality']">QUALITY</button>
     </mat-menu>
-    <a mat-button color="basic" [routerLink]="['admin', 'special-request']">SPECIAL REQUEST</a>
+    <a mat-button [matMenuTriggerFor]="srMenu">SPECIAL REQUEST</a>
+    <mat-menu #srMenu="matMenu" xPosition="before">
+      <button mat-menu-item [routerLink]="['admin', 'general-special-request']">GENERAL REQUEST</button>
+      <button mat-menu-item [routerLink]="['admin', 'store-room-special-request']">STORE ROOM REQUEST</button>
+    </mat-menu>
   </div>
   <div class="store-room-special-request-nav" *ngIf="authService.isLoggedin() && authService.getCurrentUser().department !== 'admin'">
     <a mat-button color="primary" [routerLink]="['department', authService.getCurrentUser().department]" 
