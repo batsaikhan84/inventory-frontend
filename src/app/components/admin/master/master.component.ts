@@ -33,14 +33,18 @@ export class MasterComponent implements OnInit {
   ngOnInit(): void {
     this.getMasterInventory()
     this.defaultColDef = { 
+      flex: 1,
       resizable: true,
       sortable: true,
-      filter: true
+      filter: true,
+      autoHeight: true,
     }
     this.handleEditing()
   }
   getMasterInventory(): void {
-    this._masterService.getMasterItems().subscribe(response => this.rowData = response)
+    this._masterService.getMasterItems().subscribe({
+      next: res => this.rowData = res
+    })
   }
   openDialog(): void {
     const dialogConfig = new MatDialogConfig();
@@ -114,7 +118,6 @@ export class MasterComponent implements OnInit {
   handleAssign(departmentName: string) {
     this._masterService.updateMasterItem(this.selectedItem.ID, this.selectedItem, departmentName).subscribe({
       next: (data) => {
-        console.log(data)
         this.snackbarService.openSnackBar(`item assigned to ${ departmentName } successfully`, 'success')
       },
       error: () => this.snackbarService.openSnackBar('item assigned unsuccessfully', 'error')
@@ -130,7 +133,8 @@ export class MasterComponent implements OnInit {
     })
   }
   handleDelete() {
-    this._masterService.deleteMasterItem(this.selectedItem.ID).subscribe({
+    const selectedItem = { ...this.selectedItem, Is_Active: false }
+    this._masterService.deactivateMasterItem(this.selectedItem.ID, selectedItem).subscribe({
       next: data => {
         this.getMasterInventory()
         this.snackbarService.openSnackBar('item deleted successfully', 'success')
@@ -145,6 +149,7 @@ export class MasterComponent implements OnInit {
   }
   onSearchClear() {
     this.searchValue = ''
+    this.handleSearch(this.searchValue)
   }
   toggleEditMode() {
     if(this.editText === 'Start Editing') {

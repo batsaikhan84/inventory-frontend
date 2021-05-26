@@ -91,6 +91,7 @@ import { SigninFormComponent } from './components/forms/signin-form/signin-form.
 import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
 import { AdminSrSpecialRequestComponent } from './components/admin/admin-special-request/admin-sr-special-request/admin-sr-special-request.component';
 import { SnackbarComponent } from './shared/shareComponents/snackbar/snackbar.component';
+import { AuditComponent } from './audit/audit.component';
 
 @NgModule({
   declarations: [
@@ -161,7 +162,8 @@ import { SnackbarComponent } from './shared/shareComponents/snackbar/snackbar.co
     ResetPasswordComponent,
     AdminSrSpecialRequestComponent,
     SnackbarComponent,
-    StatusRendererComponent
+    StatusRendererComponent,
+    AuditComponent
   ],
   exports: [
     MatChipsModule

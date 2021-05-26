@@ -43,8 +43,9 @@ export class ReceivingDepartmentComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 100},
+      {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 110},
       {headerName: 'Item', field: 'Item', minWidth: 450},
+      {headerName: 'Item_ID', field: 'Item_ID', minWidth: 100, maxWidth: 110},
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
       {headerName: 'Part Number', field: 'Part_Number', minWidth: 150},
       {headerName: 'Recent CN', field: 'Recent_CN'},

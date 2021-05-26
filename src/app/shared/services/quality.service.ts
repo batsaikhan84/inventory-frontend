@@ -1,6 +1,7 @@
 import { IQuality } from './../models/quality.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,10 @@ export class QualityService {
   baseMasterUrl = 'http://localhost:3000/master'
   constructor(private _http: HttpClient) { }
   getQualityItems() {
-    return this._http.get<IQuality[]>(this.baseExtractionUrl)
+    return this._http.get<IQuality[]>(this.baseExtractionUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getQualityMasterItems() {
-    return this._http.get<IQuality[]>(`${this.baseExtractionUrl}/master`)
+    return this._http.get<IQuality[]>(`${this.baseExtractionUrl}/master`).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getQualityMasterItem(id: number) {
     return this._http.get<IQuality>(`${this.baseExtractionUrl}/master/${id}`)

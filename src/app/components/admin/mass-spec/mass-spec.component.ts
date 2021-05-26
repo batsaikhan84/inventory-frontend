@@ -66,4 +66,14 @@ export class MassSpecComponent implements OnInit {
       }
     })
   }
+  sizeToFit() {
+    this.gridApi.sizeColumnsToFit();
+  }
+  autoSizeAll(skipHeader: any) {
+    var allColumnIds: any[] = [];
+    this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {
+      allColumnIds.push(column.colId);
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+  }
 }

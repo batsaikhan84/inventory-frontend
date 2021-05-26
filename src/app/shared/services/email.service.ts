@@ -8,7 +8,10 @@ import { Injectable } from '@angular/core';
 export class EmailService {
  baseUrl = 'http://localhost:3000/email/special-request'
   constructor(private _http: HttpClient) { }
+  sendGeneralSpecialRequestEmail(specialRequestItems: any) {
+    return this._http.post('http://localhost:3000/email/special-request', specialRequestItems)
+  }
   sendSrSpecialRequestEmail(specialRequestItems: any) {
-    return this._http.post(this.baseUrl, specialRequestItems)
+    return this._http.post('http://localhost:3000/email/special-request-sr', specialRequestItems)
   }
 }

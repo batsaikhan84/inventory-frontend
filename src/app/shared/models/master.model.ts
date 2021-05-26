@@ -1,5 +1,4 @@
 import { IChemical } from './chemical.model';
-import { IStoreRoom } from './store-room.model';
 import { IQuality } from 'src/app/shared/models/quality.model';
 import { IReceiving } from './receiving.model';
 import { IMassSpec } from './mass-spec.model';
@@ -22,6 +21,8 @@ export interface IMaster{
     Category: string;
     Comments: string;
     Type: string;
+    Class: string;
+    Is_Active: boolean;
     extraction: IExtraction[];
     massSpec: IMassSpec[];
     receiving: IReceiving[];

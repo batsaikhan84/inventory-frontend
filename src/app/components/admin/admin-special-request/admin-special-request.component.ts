@@ -40,7 +40,10 @@ export class AdminSpecialRequestComponent implements OnInit {
   getSpecialRequestItems(): void {
     this._specialRequestService.getSpecialRequestItems().subscribe({
       next: data => {
-        const result = data.filter(item => item.Is_Store_Room_Item === false)
+        const result = data.filter(res => res.Is_Store_Room_Item === false).map(item => ({
+          ...item,
+          Item: item.master.Item
+        }))
         this.rowData = result
       },
       error: error => error

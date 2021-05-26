@@ -51,6 +51,7 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
       {headerName: 'Item', field: 'Item', minWidth: 700},
       {headerName: 'Item_ID', field: 'Item_ID', minWidth: 150},
       {headerName: 'Quantity', field: 'Quantity', minWidth: 220, editable: true },
+      {headerName: 'Recent CN', field: 'Recent_CN', minWidth: 210 },
       {headerName: 'Status', field: 'Status', minWidth: 220},
       {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 220,  valueFormatter: function(params: any) {
         return new Date(params.data.Time_Requested).toLocaleDateString()
@@ -61,7 +62,6 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
     ]
   }
   handleConfirmation() {
-    const itemsToEmail: ISpecialRequest[] = []
     let isError = false
     const currentUser = this.authService.getCurrentUser()
     this.dialogService.confirmationDialog("Please confirm your special request.").afterClosed().subscribe(res => {
@@ -72,7 +72,6 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
           }
           this.specialRequestService.updateSpecialRequestItem(selectedRow.ID, data).subscribe({
             next: (data) => {
-              itemsToEmail.push(data)
               this.getSpecialRequestItems() 
               this.getStatusItems()
               this.isButtonDisabled = true
@@ -86,7 +85,7 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
         })
       }
       if(isError === false) {
-        this.emailService.sendSrSpecialRequestEmail({Items: itemsToEmail, User: currentUser, Type: 'Store Room'}).subscribe()
+        this.emailService.sendSrSpecialRequestEmail({Items: this.selectedRows, User: currentUser, Type: 'Store Room'}).subscribe()
         this.snackbarService.openSnackBar('Your store room special Request submitted successfully', 'success')
       } else {
         this.snackbarService.openSnackBar('Submission Failed', 'error')
@@ -109,15 +108,19 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
         if(data === true) {
           this.selectedRows.map(item => {
             this.specialRequestService.deleteItem(item.ID).subscribe({
-              next: () => this.snackbarService.openSnackBar(`selected items deleted successfully'`, 'success'),
+              next: () => {
+                this.snackbarService.openSnackBar(`selected items deleted successfully'`, 'success')
+                this.getSpecialRequestItems()
+                this.srConfirmationDataService.currentSrConfirmationItems.subscribe(res => this.rowData = res)
+              },
               error: () => this.snackbarService.openSnackBar(`selected items deleted unsuccessfully'`, 'error')
             })
           })
           this.isButtonDisabled = true
-          this.getSpecialRequestItems()
+
         }
       },
-      error: (error) => error 
+      error: () =>  this.snackbarService.openSnackBar(`selected items deleted unsuccessfully'`, 'error')
     })
   }
   getStatusItems(): void {

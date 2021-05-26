@@ -10,16 +10,15 @@ export class NeedToOrderService {
     if(params.data.Min_Quantity === null || params.data.Max_Quantity === null) {
       return 'There is no max min'
     } else {
-      if(!params.data.is_Need_To_Order) {
+      if(!params.data.Is_Need_To_Order || params.data.Order_Quantity === 0) {
         return 'No Need To Order'
       }
-      return Math.abs(params.data.Order_Quantity)
+      return params.data.Order_Quantity
     }
   }
   styleNeedToOrder(params: any) {
-    const isNeedToOrder =  params.data.Min_Quantity >= params.data.Quantity
     if(params.data.Min_Quantity !== null || params.data.Max_Quantity !== null) {
-      if(!params.data.is_Need_To_Order) {
+      if(!params.data.Is_Need_To_Order || params.data.Order_Quantity === 0) {
         return { 'background-color': '#90EE90', 'text-align': 'center'}
       }
       return { 'background-color': '#FF0000', 'font-weight': 900, 'color': 'yellow', 'font-size': '1.2em', 'text-align': 'center'  }

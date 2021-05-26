@@ -23,21 +23,21 @@ export class ReceivingQuantityComponent implements OnInit {
     this.cellTotal = data.cellValue
   }
   ngOnInit(): void {
-    this.getMasterExtraction()
+    this.getMasterReceiving()
     this.defaultColDef = { 
       resizable: true,
       sortable: true,
       filter: true,
     }
     this.columnDefs = [
-      {headerName: 'Location', field: 'Location', minWidth: 500 },
+      {headerName: 'Location', field: 'Location', minWidth: 500, editable: true },
       {headerName: 'Quantity', field: 'Quantity', minWidth: 140, editable: true },
     ]
   }
   onClose() {
     this.dialog.close()
   }
-  getMasterExtraction(): void {
+  getMasterReceiving(): void {
     this.receivingService.getReceivingItemsOfMaster(this.rowItem.Item_ID).subscribe(responseData => this.rowData = responseData)
   }
   onFirstDataRendered(params: any) {

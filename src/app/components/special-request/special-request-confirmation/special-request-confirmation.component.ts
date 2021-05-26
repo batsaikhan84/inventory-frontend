@@ -50,7 +50,8 @@ export class SpecialRequestConfirmationComponent implements OnInit {
   handleEditing() {
     this.columnDefs = [
       {headerName: 'ID', field: 'Item_ID', minWidth: 100, maxWidth: 110, checkboxSelection: true, headerCheckboxSelection: true, },
-      {headerName: 'Item', field: 'Item', minWidth: 850},
+      {headerName: 'Item', field: 'Item', minWidth: 650},
+      {headerName: 'Recent CN', field: 'Recent_CN', minWidth: 210 },
       {headerName: 'Quantity', field: 'Quantity', minWidth: 210, editable: true },
       {headerName: 'Status', field: 'Status', minWidth: 210},
       {headerName: 'Time Requested', field: 'Time_Requested', minWidth: 210,  valueFormatter: function(params: any) {
@@ -102,7 +103,7 @@ export class SpecialRequestConfirmationComponent implements OnInit {
         })
       }
       if(isError === false) {
-        this.emailService.sendSrSpecialRequestEmail({Items: itemsToEmail, User: currentUser, Type: 'General'}).subscribe()
+        this.emailService.sendGeneralSpecialRequestEmail({Items: itemsToEmail, User: currentUser, Type: 'General'}).subscribe()
         this.snackbarService.openSnackBar('your special request submitted successfully', 'success')
       } else {
         this.snackbarService.openSnackBar('Submission Failed', 'error')

@@ -35,10 +35,9 @@ export class ReceivingButtonRendererComponent implements AgRendererComponent, IC
     dialogConfig.autoFocus = true;
     dialogConfig.width = "50%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
-    const currentDialog = this.dialog.open(ReceivingQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe({
+    this.dialog.open(ReceivingQuantityComponent, dialogConfig).afterClosed().subscribe({
       next: () => {
-        () => this.params.context.receivingComponent.getReceivingQuantity()
+        this.params.context.receivingComponent.getReceivingQuantity()
         this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
       },
       error: () => {

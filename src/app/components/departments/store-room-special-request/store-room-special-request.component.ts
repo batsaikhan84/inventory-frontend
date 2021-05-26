@@ -59,6 +59,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
       {headerName: 'Recent CN', field: 'Recent_CN' },
       {headerName: 'Purchase Unit', field: 'Purchase_Unit'},
       {headerName: 'Part Number', field: 'Part_Number'},
+      {headerName: 'Location', field: 'Location', minWidth: 150},
       {headerName: 'Comments', field: 'Comments', minWidth: 300}
     ]
   }
@@ -95,7 +96,6 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     this.dialog.open(StoreRoomSpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
       this.gridApi.deselectAll()
       this.getConfirmationItem()
-      this.snackbarService.openSnackBar('Please confirm your request in step 2', 'success')
     })  
   }
   getSelectedRows() {
@@ -109,9 +109,6 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     } else {
       this.isSendButtonDisabled = true
     }
-  }
-  sizeToFit() {
-    this.gridApi.sizeColumnsToFit();
   }
   onFirstDataRendered(params: any) {
     params.api.sizeColumnsToFit();

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { IRd } from '../models/rd.model';
 
 @Injectable({
@@ -10,10 +11,10 @@ export class RdService {
   baseMasterUrl = 'http://localhost:3000/master'
   constructor(private _http: HttpClient) { }
   getRdItems() {
-    return this._http.get<IRd[]>(this.baseExtractionUrl)
+    return this._http.get<IRd[]>(this.baseExtractionUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getRdMasterItems() {
-    return this._http.get<IRd[]>(`${this.baseExtractionUrl}/master`)
+    return this._http.get<IRd[]>(`${this.baseExtractionUrl}/master`).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getRdMasterItem(id: number) {
     return this._http.get<IRd>(`${this.baseExtractionUrl}/master/${id}`)

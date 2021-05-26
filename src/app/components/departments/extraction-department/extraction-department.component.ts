@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ExtractionService } from 'src/app/shared/services/extraction.service';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { ExtractionDepartmentButtonRendererComponent } from './extraction-department-button-renderer/extraction-department-button-renderer.component';
@@ -21,7 +22,9 @@ export class ExtractionDepartmentComponent implements OnInit {
   rowData: any;
   context: any;
 
-  constructor(private extractionService: ExtractionService, private needToOrderService: NeedToOrderService) { 
+  constructor(private extractionService: ExtractionService, 
+              private needToOrderService: NeedToOrderService,
+              private authService: AuthService) { 
     this.frameworkComponents = { buttonRenderer: ExtractionDepartmentButtonRendererComponent }
     this.context = { extractionComponent: this }
   }
@@ -43,8 +46,9 @@ export class ExtractionDepartmentComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 100},
+      {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 110},
       {headerName: 'Item', field: 'Item', minWidth: 450},
+      {headerName: 'Item_ID', field: 'Item_ID', minWidth: 100, maxWidth: 110},
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
       {headerName: 'Part Number', field: 'Part_Number', minWidth: 150},
       {headerName: 'Recent CN', field: 'Recent_CN'},
@@ -72,7 +76,9 @@ export class ExtractionDepartmentComponent implements OnInit {
   }
   handleUpdate(value: any) {
     this.extractionService.updateExtractionItem(value.data.ID , value.data).subscribe({
-      next: data => console.log(data),
+      next: data => {
+
+      },
       error: error => {
         console.error(error)
       }

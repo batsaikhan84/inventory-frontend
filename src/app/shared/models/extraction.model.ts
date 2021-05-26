@@ -1,3 +1,5 @@
+import { IMaster } from "./master.model";
+
 export interface IExtraction {
     Item: any;
     ID: number;
@@ -7,4 +9,5 @@ export interface IExtraction {
     Min_Quantity: number;
     Max_Quantity: number;
     Usage_Level: string;
+    master: IMaster;
 }

@@ -1,5 +1,5 @@
 import { IMaster } from 'src/app/shared/models/master.model';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { IExtraction } from './../models/extraction.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -12,10 +12,10 @@ export class ExtractionService {
   baseMasterUrl = 'http://localhost:3000/master'
   constructor(private _http: HttpClient) { }
   getExtractionItems() {
-    return this._http.get<IMaster[]>(this.baseExtractionUrl)
+    return this._http.get<IExtraction[]>(this.baseExtractionUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getExtractionMasterItems() {
-    return this._http.get<IExtraction[]>(`${this.baseExtractionUrl}/master`)
+    return this._http.get<IExtraction[]>(`${this.baseExtractionUrl}/master`).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getExtractionMasterItem(id: number) {
     return this._http.get<IExtraction>(`${this.baseExtractionUrl}/master/${id}`)

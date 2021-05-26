@@ -1,19 +1,18 @@
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { DataService } from './data.service';
 import { IForgotPassword } from '../models/reset-password.model';
 import { SnackbarService } from './snackbar.service';
 import { IUser } from '../models/user.model';
-import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private tokenExpirationTimer: any;
+  tokenExpirationTimer: any;
   message: string = ''
   helper = new JwtHelperService();
   constructor(private _http: HttpClient,
@@ -26,14 +25,14 @@ export class AuthService {
       next: (res: any) => {
         localStorage.setItem('token', res.accessToken)
         const decodedToken = this.helper.decodeToken(res.accessToken)
-        if(decodedToken.role === 'admin') {
-          this._router.navigate(['/admin/store-room'])
-        } else {
-          this._router.navigate(['/department/home'])
-        }
         const tokenExpirationDate = decodedToken.exp * 1000 - new Date().getTime()
         this.autoLogout(tokenExpirationDate)
         this.dataService.loginErrorMessage('')
+        if(decodedToken.role === 'admin') {
+          this._router.navigate(['/admin/store-room'])
+        } else {
+          this._router.navigate([`/department/${decodedToken.department}`])
+        }
         return
       },
       error: () => {
@@ -59,17 +58,25 @@ export class AuthService {
   }
   getCurrentUser() {
     const token: string = localStorage.getItem('token') || ''
+    let user: IUser = {
+        username: '',
+        name: '',
+        department: '',
+        role: '',
+        exp: null
+    }
     if(token) {
       const decodedToken = this.helper.decodeToken(token)
-      const currentUser: IUser = {
+      user = {
         username: decodedToken.username,
         name: decodedToken.name,
         department: decodedToken.department,
         role: decodedToken.role,
         exp: decodedToken.exp
       }
-      return currentUser
+      return user
     }
+    return user
   }
   isLoggedin(): boolean {
     const token: string = localStorage.getItem('token') || ''

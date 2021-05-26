@@ -41,7 +41,11 @@ export class ReceivingComponent implements OnInit {
     }
   }
   getReceivingQuantity(): void {
-    this.receivingService.getReceivingMasterItems().subscribe(responseData => this.rowData = responseData)
+    this.receivingService.getReceivingMasterItems().subscribe({
+      next: res => {
+        this.rowData = res
+      }
+    })
   }
   onBtnClick(event: any) {
     this.rowDataClicked = event.rowData
@@ -67,6 +71,16 @@ export class ReceivingComponent implements OnInit {
         console.error(error)
       }
     })
+  }
+  sizeToFit() {
+    this.gridApi.sizeColumnsToFit();
+  }
+  autoSizeAll(skipHeader: any) {
+    var allColumnIds: any[] = [];
+    this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {
+      allColumnIds.push(column.colId);
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
 }
 

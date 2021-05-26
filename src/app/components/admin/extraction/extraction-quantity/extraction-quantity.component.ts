@@ -30,7 +30,7 @@ export class ExtractionQuantityComponent implements OnInit {
       filter: true,
     }
     this.columnDefs = [
-      {headerName: 'Location', field: 'Location', minWidth: 500 },
+      {headerName: 'Location', field: 'Location', minWidth: 500, editable: true },
       {headerName: 'Quantity', field: 'Quantity', minWidth: 140, editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
     ]
   }

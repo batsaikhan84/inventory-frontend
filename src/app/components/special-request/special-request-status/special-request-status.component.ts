@@ -54,8 +54,7 @@ export class SpecialRequestStatusComponent implements OnInit {
         const statusData: any = data.filter(specialRequestItem => 
         specialRequestItem.Is_Confirmed === true && 
         specialRequestItem.Is_Store_Room_Item === false &&
-        specialRequestItem.Department === this.authService.getCurrentUser().department &&
-        specialRequestItem.Is_Store_Room_Item === false
+        specialRequestItem.Department === this.authService.getCurrentUser().department
         )
         .map(statusItem => ({
           ...statusItem,

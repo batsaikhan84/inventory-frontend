@@ -37,7 +37,12 @@ export class ExtractionComponent implements OnInit {
     }
   }
   getExtractionQuantity(): void {
-    this.extractionService.getExtractionMasterItems().subscribe(responseData => this.rowData = responseData)
+    this.extractionService.getExtractionMasterItems().subscribe({
+      next: items => {
+        console.log(items)
+        this.rowData = items
+      }
+    })
   }
   onBtnClick(event: any) {
     this.rowDataClicked = event.rowData
@@ -58,11 +63,19 @@ export class ExtractionComponent implements OnInit {
   }
   handleUpdate(value: any) {
     this.extractionService.updateExtractionItem(value.data.ID , value.data).subscribe({
-      next: data => console.log(data),
-      error: error => {
-        console.error(error)
-      }
+      next: data => data,
+      error: error => error
     })
+  }
+  sizeToFit() {
+    this.gridApi.sizeColumnsToFit();
+  }
+  autoSizeAll(skipHeader: any) {
+    var allColumnIds: any[] = [];
+    this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {
+      allColumnIds.push(column.colId);
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
 }
 

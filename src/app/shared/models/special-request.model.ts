@@ -6,6 +6,7 @@ export interface ISpecialRequest {
     Item?: string;
     Quantity: number;
     Is_Store_Room_Item?: boolean;
+    Location?: string;
     User: string;
     Recent_CN?: string;
     Department: string;

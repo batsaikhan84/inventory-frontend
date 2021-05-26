@@ -39,7 +39,10 @@ export class AdminSrSpecialRequestComponent implements OnInit {
   getMasterInventory(): void {
     this._specialRequestService.getSpecialRequestItems().subscribe({
       next: data => {
-        const result = data.filter(res => res.Is_Store_Room_Item === true)
+        const result = data.filter(res => res.Is_Store_Room_Item === true).map(item => ({
+          ...item,
+          Item: item.master.Item
+        }))
         this.rowData = result
       },
       error: error => error
@@ -77,9 +80,6 @@ export class AdminSrSpecialRequestComponent implements OnInit {
   }
   onCellValueChanged(params: any) {
     this._specialRequestService.updateSpecialRequestItem(params.data.ID, params.data).subscribe(response => this.getMasterInventory())
-  }
-  sizeToFit() {
-    this.gridApi.sizeColumnsToFit();
   }
   onFirstDataRendered(params: any) {
     params.api.sizeColumnsToFit();

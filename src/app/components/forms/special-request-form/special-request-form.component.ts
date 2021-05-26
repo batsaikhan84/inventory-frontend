@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { IUser } from 'src/app/shared/models/user.model';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-special-request-form',
@@ -13,33 +14,33 @@ import { IUser } from 'src/app/shared/models/user.model';
   styleUrls: ['./special-request-form.component.scss']
 })
 export class SpecialRequestFormComponent implements OnInit {
-  currentUser: IUser
   specialRequestItem: any
   specialRequestForm = new FormGroup({
     Quantity: new FormControl('', [Validators.required]),
   })
   constructor(private _specialRequestService: SpecialRequestService, 
-              private dialog: MatDialogRef<SpecialRequestFormComponent>, 
-              private _dataService: DataService,
+              private dialog: MatDialogRef<SpecialRequestFormComponent>,
               @Inject(MAT_DIALOG_DATA) 
               public data: any,
-              private authService: AuthService) { 
+              private authService: AuthService,
+              private snackbarService: SnackbarService) { 
     this.specialRequestItem = data
   }
-  ngOnInit() {
-    
-  }
+  ngOnInit() { }
   onSubmit() {
     const data: ISpecialRequest = {
       ID: 0,
       Quantity: Number(this.specialRequestForm.value.Quantity),
       Item_ID: this.specialRequestItem.ID,
-      Department: this.currentUser.department,
-      User: this.currentUser.name,
+      Department: this.authService.getCurrentUser().department,
+      User: this.authService.getCurrentUser().name,
       Is_Confirmed: false,
       Is_Store_Room_Item: false
     }
-    this._specialRequestService.createSpecialRequestItem(data).subscribe(response => response)
+    this._specialRequestService.createSpecialRequestItem(data).subscribe({
+      next: () => this.snackbarService.openSnackBar('Please confirm your request in step 2', 'success'),
+      error: () => this.snackbarService.openSnackBar('Item already selected', 'error')
+    })
     this.onClose()
   }
   onClose() {

@@ -1,6 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ICellRendererParams } from 'ag-grid-community';
+import { IAudit } from 'src/app/audit/audit.model';
+import { AuditService } from 'src/app/audit/audit.service';
 import { IExtraction } from 'src/app/shared/models/extraction.model';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { ExtractionService } from 'src/app/shared/services/extraction.service';
 
 @Component({
@@ -16,7 +20,9 @@ export class ExtractionDepartmentQuantityComponent implements OnInit {
   gridApi: any;
   gridColumnApi: any;
   defaultColDef: any
-  constructor(private extractionService: ExtractionService, 
+  constructor(private authService: AuthService,
+              private auditService: AuditService,
+              private extractionService: ExtractionService, 
               private dialog: MatDialogRef<ExtractionDepartmentQuantityComponent>, 
               @Inject(MAT_DIALOG_DATA) public data: any) { 
     this.rowItem = data.rowItem
@@ -48,8 +54,21 @@ export class ExtractionDepartmentQuantityComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
   }
   handleUpdate(value: any) {
-    this.extractionService.updateExtractionItem(value.data.ID, value.data).subscribe(response => 
-      this.extractionService.getExtractionMasterItem(response.Item_ID).subscribe(responseData => this.rowItem = responseData)
-    )
+    this.extractionService.updateExtractionItem(value.data.ID, value.data).subscribe({
+      next: res => {
+        this.extractionService.getExtractionMasterItem(res.Item_ID).subscribe(item => this.rowItem = item)
+        const auditItem: IAudit = {
+          ID: null,
+          New_Quantity: value.newValue,
+          Old_Quantity: value.oldValue,
+          Item_ID: value.data.Item_ID,
+          Department_Item_ID: value.data.ID,
+          User: this.authService.getCurrentUser().name,
+          Department: this.authService.getCurrentUser().department
+        }
+        this.auditService.createAuditItem(auditItem).subscribe()
+      },
+      error: (error) => error 
+    })
   }
 }

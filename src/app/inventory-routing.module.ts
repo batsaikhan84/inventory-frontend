@@ -45,15 +45,15 @@ const routes: Routes = [
     ]},
   { path: 'department', component: DepartmentsHomeComponent, canActivate: [AuthGuard],
     children: [
-      { path: 'home', component: StoreRoomSpecialRequestComponent},
+      { path: 'store-room', component: StoreRoomSpecialRequestComponent},
       { path: 'special-request', component: SpecialRequestComponent},
-      { path: 'extraction-inventory', component: ExtractionDepartmentComponent},
-      { path: 'receiving-inventory', component: ReceivingDepartmentComponent},
-      { path: 'mass-spec-inventory', component: MassSpecDepartmentComponent},
-      { path: 'screening-inventory', component: ScreeningDepartmentComponent},
-      { path: 'rd-inventory', component: RdDepartmentComponent},
-      { path: 'quality-inventory', component: QualityDepartmentComponent},
-      { path: 'safety-inventory', component: SafetyDepartmentComponent},
+      { path: 'extraction', component: ExtractionDepartmentComponent},
+      { path: 'receiving', component: ReceivingDepartmentComponent},
+      { path: 'mass-spec', component: MassSpecDepartmentComponent},
+      { path: 'screening', component: ScreeningDepartmentComponent},
+      { path: 'rd', component: RdDepartmentComponent},
+      { path: 'quality', component: QualityDepartmentComponent},
+      { path: 'safety', component: SafetyDepartmentComponent},
       // canActivate: [AuthGuard]
     ]},
 ];

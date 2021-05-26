@@ -34,7 +34,11 @@ export class StoreRoomComponent implements OnInit {
     this.handleEditing()
   }
   getStoreRoomMaster(): void {
-    this.storeRoomService.getStoreRoomMasterItems().subscribe(responseData => this.rowData = responseData)
+    this.storeRoomService.getStoreRoomMasterItems().subscribe({
+      next: res => {
+        this.rowData = res
+      }
+    })
   }
   onBtnClick(event: any) {
     this.rowDataClicked = event.rowData
@@ -47,14 +51,13 @@ export class StoreRoomComponent implements OnInit {
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
       {headerName: 'Part Number', field: 'Part_Number', minWidth: 150},
       {headerName: 'Recent CN', field: 'Recent_CN'},
-      {headerName: 'Total Quantity', field: 'Quantity', minWidth: 150, 
-      editable: true,  
-        'type': 'numericColumn', 
+      {headerName: 'Location', field: 'Location', editable: true},
+      {headerName: 'Total Quantity', field: 'Quantity', minWidth: 150, editable: true, 'type': 'numericColumn', 
         valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
-      {headerName: 'Usage_Level', field: 'Usage_Level', editable: true},
-      {headerName: 'Min Quantity', field: 'Min_Quantity', editable: true,  'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Min_Quantity = Number(params.newValue)} },
-      {headerName: 'Max Quantity', field: 'Max_Quantity', editable: true,  'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Max_Quantity = Number(params.newValue)} },
-      {headerName: 'Need To Order', cellStyle: this.needToOrderService.styleNeedToOrder, valueFormatter: this.needToOrderService.getNeedToOrderNumber},
+      {headerName: 'Usage Level', field: 'Usage_Level', editable: true },
+      {headerName: 'Min Quantity', field: 'Min_Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Min_Quantity = params.newValue ? Number(params.newValue) : null}},
+      {headerName: 'Max Quantity', field: 'Max_Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Max_Quantity = params.newValue ? Number(params.newValue) : null}},
+      {headerName: 'Need To Order', field: 'Order_Quantity', cellStyle: this.needToOrderService.styleNeedToOrder, valueFormatter: this.needToOrderService.getNeedToOrderNumber},
       {headerName: 'Issued', field: 'Issued', editable: true},
       {headerName: 'Received', field: 'Received', editable: true }
     ]
@@ -102,7 +105,9 @@ export class StoreRoomComponent implements OnInit {
       data = {...params.data}
     }
     this.storeRoomService.updateStoreRoomItem(params.data.ID , data).subscribe({
-      next: data => this.getStoreRoomMaster(),
+      next: data =>{ 
+        console.log(data)
+        this.getStoreRoomMaster()},
       error: error => {
         console.error(error)
       }

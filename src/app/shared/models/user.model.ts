@@ -3,5 +3,5 @@ export class IUser {
     name: string;
     department: string;
     role: string;
-    exp: number;
+    exp: number | null;
 }
