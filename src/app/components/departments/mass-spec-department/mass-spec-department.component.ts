@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { MassSpecDepartmentButtonRendererComponent } from './mass-spec-department-button-renderer/mass-spec-department-button-renderer.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-mass-spec-department',
@@ -21,7 +22,9 @@ export class MassSpecDepartmentComponent implements OnInit {
   rowData: any;
   context: any;
 
-  constructor(private massSpecService: MassSpecService, private needToOrderService: NeedToOrderService) { 
+  constructor(private massSpecService: MassSpecService, 
+              private needToOrderService: NeedToOrderService,
+              public authService: AuthService) { 
     this.frameworkComponents = { buttonRenderer: MassSpecDepartmentButtonRendererComponent }
     this.context = { massSpecComponent: this }
   }
@@ -57,9 +60,9 @@ export class MassSpecDepartmentComponent implements OnInit {
       {headerName: 'Comments', field: 'Comments', minWidth: 200}
     ]
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

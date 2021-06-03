@@ -24,7 +24,7 @@ export class ExtractionDepartmentComponent implements OnInit {
 
   constructor(private extractionService: ExtractionService, 
               private needToOrderService: NeedToOrderService,
-              private authService: AuthService) { 
+              public authService: AuthService) { 
     this.frameworkComponents = { buttonRenderer: ExtractionDepartmentButtonRendererComponent }
     this.context = { extractionComponent: this }
   }
@@ -60,9 +60,9 @@ export class ExtractionDepartmentComponent implements OnInit {
       {headerName: 'Comments', field: 'Comments', minWidth: 200}
     ]
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

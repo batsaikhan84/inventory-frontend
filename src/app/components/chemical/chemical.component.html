@@ -6,6 +6,8 @@
           </button>
         <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
     </mat-form-field>
+    <span class="spacer"></span>
+    <div style="font-weight: 900; color: #2f3643;;">CHEMICAL</div>
 </mat-toolbar>
 <mat-card class="chemical-card" *ngFor="let item of chemicalItemsOfMaster | chemicalFilter: searchValue">
     <mat-toolbar style="background: #add8e6; color: #36454f; font-weight: 600;">

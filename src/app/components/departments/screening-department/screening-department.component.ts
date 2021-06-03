@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { ScreeningService } from 'src/app/shared/services/screening.service';
 import { ScreeningDepartmentButtonRendererComponent } from './screening-department-button-renderer/screening-department-button-renderer.component';
@@ -22,7 +23,8 @@ export class ScreeningDepartmentComponent implements OnInit {
   context: any;
 
   constructor(private screeningService: ScreeningService,
-              private needToOrderService: NeedToOrderService) { 
+              private needToOrderService: NeedToOrderService,
+              public authService: AuthService) { 
     this.frameworkComponents = { buttonRenderer: ScreeningDepartmentButtonRendererComponent }
     this.context = { screeningComponent: this }
   }
@@ -58,9 +60,9 @@ export class ScreeningDepartmentComponent implements OnInit {
       {headerName: 'Comments', field: 'Comments', minWidth: 200}
     ]
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

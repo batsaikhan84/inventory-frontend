@@ -1,19 +1,29 @@
-import { DataService } from 'src/app/shared/services/data.service';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DataService } from 'src/app/shared/services/data.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SignupFormComponent } from '../forms/signup-form/signup-form.component';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  selector: 'app-navigation',
+  templateUrl: './navigation.component.html',
+  styleUrls: ['./navigation.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavigationComponent {
+  menuTitle: string = ''
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
   showFiller = false;
   constructor(public authService: AuthService,
               public dataService: DataService, 
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private breakpointObserver: BreakpointObserver) {
   }
   ngOnInit(): void { 
   }

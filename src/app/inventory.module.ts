@@ -14,7 +14,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -92,6 +91,8 @@ import { ResetPasswordComponent } from './components/auth/reset/reset-password.c
 import { AdminSrSpecialRequestComponent } from './components/admin/admin-special-request/admin-sr-special-request/admin-sr-special-request.component';
 import { SnackbarComponent } from './shared/shareComponents/snackbar/snackbar.component';
 import { AuditComponent } from './audit/audit.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -163,7 +164,8 @@ import { AuditComponent } from './audit/audit.component';
     AdminSrSpecialRequestComponent,
     SnackbarComponent,
     StatusRendererComponent,
-    AuditComponent
+    AuditComponent,
+    NavigationComponent
   ],
   exports: [
     MatChipsModule

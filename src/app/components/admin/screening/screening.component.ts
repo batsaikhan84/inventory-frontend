@@ -3,6 +3,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColumnDefsService } from 'src/app/shared/services/column-defs.service';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { ScreeningService } from 'src/app/shared/services/screening.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { ScreeningButtonRendererComponent } from './screening-button-renderer/screening-button-renderer.component';
 
 @Component({
@@ -22,7 +23,9 @@ export class ScreeningComponent implements OnInit {
   rowData: any;
   context: any;
 
-  constructor(private screeningService: ScreeningService, private needToOrderService: NeedToOrderService, private columnDefsService: ColumnDefsService) { 
+  constructor(private screeningService: ScreeningService,
+              private columnDefsService: ColumnDefsService,
+              private snackbarService: SnackbarService) { 
     this.frameworkComponents = { buttonRenderer: ScreeningButtonRendererComponent }
     this.context = { screeningComponent: this }
   }
@@ -62,6 +65,12 @@ export class ScreeningComponent implements OnInit {
       error: error => {
         console.error(error)
       }
+    })
+  }
+  sendEmailReport() {
+    this.screeningService.sendEmailReport().subscribe({
+      next: () => this.snackbarService.openSnackBar('Email has been sent', 'success'),
+      error: () => this.snackbarService.openSnackBar('Email has not been sent', 'error')
     })
   }
 }

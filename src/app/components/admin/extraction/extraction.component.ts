@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ExtractionButtonRendererComponent } from './extraction-button-renderer/extraction-button-renderer.component';
 import { ColumnDefsService } from 'src/app/shared/services/column-defs.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-extraction',
@@ -22,7 +23,8 @@ export class ExtractionComponent implements OnInit {
   rowData: any;
 
   constructor(private extractionService: ExtractionService, 
-              private columnDefsService: ColumnDefsService) { 
+              private columnDefsService: ColumnDefsService,
+              private snackbarService: SnackbarService) { 
     this.frameworkComponents = { buttonRenderer: ExtractionButtonRendererComponent }
     this.context = { extractionComponent: this}
   }
@@ -39,7 +41,6 @@ export class ExtractionComponent implements OnInit {
   getExtractionQuantity(): void {
     this.extractionService.getExtractionMasterItems().subscribe({
       next: items => {
-        console.log(items)
         this.rowData = items
       }
     })
@@ -76,6 +77,12 @@ export class ExtractionComponent implements OnInit {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+  }
+  sendEmailReport() {
+    this.extractionService.sendEmailReport().subscribe({
+      next: () => this.snackbarService.openSnackBar('Email has been sent', 'success'),
+      error: () => this.snackbarService.openSnackBar('Email has not been sent', 'error')
+    })
   }
 }
 

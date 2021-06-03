@@ -6,8 +6,8 @@ import { IStoreRoom } from '../models/store-room.model';
   providedIn: 'root'
 })
 export class StoreRoomService {
-  baseStoreRoomUrl = 'http://localhost:3000/store-room'
-  baseMasterUrl = 'http://localhost:3000/master'
+  baseStoreRoomUrl = 'http://192.168.112.64:3000/store-room'
+  baseMasterUrl = 'http://192.168.112.64:3000/master'
   constructor(private _http: HttpClient) { }
   getStoreRoomItems() {
     return this._http.get<IStoreRoom[]>(this.baseStoreRoomUrl)
@@ -20,6 +20,9 @@ export class StoreRoomService {
   }
   updateStoreRoomItem(id: number, data: IStoreRoom) {
     return this._http.patch<IStoreRoom>(`${this.baseStoreRoomUrl}/${id}`, data)
+  }
+  deactivateStoreRoomItem(id: number, item: IStoreRoom) {
+    return this._http.patch(`${this.baseStoreRoomUrl}/deactivate/${id}`, item)
   }
 }
 

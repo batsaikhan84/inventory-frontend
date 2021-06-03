@@ -20,7 +20,7 @@ export class ColumnDefsService {
       {headerName: 'Min Quantity', field: 'Min_Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Min_Quantity = params.newValue ? Number(params.newValue) : null}},
       {headerName: 'Max Quantity', field: 'Max_Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Max_Quantity = params.newValue ? Number(params.newValue) : null} },
       {headerName: 'Need To Order', field: 'Order_Quantity', cellStyle: this.needToOrderService.styleNeedToOrder, valueFormatter: this.needToOrderService.getNeedToOrderNumber},
-      {headerName: 'Comments', field: 'Comments', minWidth: 200 }
+      {headerName: 'Comments', field: 'Comments', minWidth: 200 },
     ]
     return columnDefs
   }

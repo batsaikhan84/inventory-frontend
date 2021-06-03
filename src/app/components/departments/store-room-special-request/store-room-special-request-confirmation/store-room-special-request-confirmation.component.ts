@@ -170,9 +170,9 @@ export class StoreRoomSpecialRequestConfirmationComponent implements OnInit {
   sizeToFit() {
     this.gridApi.sizeColumnsToFit();
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

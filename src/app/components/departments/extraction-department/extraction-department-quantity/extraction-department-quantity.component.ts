@@ -36,8 +36,8 @@ export class ExtractionDepartmentQuantityComponent implements OnInit {
       filter: true,
     }
     this.columnDefs = [
-      {headerName: 'Location', field: 'Location', minWidth: 500 },
-      {headerName: 'Quantity', field: 'Quantity', minWidth: 140, editable: true },
+      {headerName: 'Location', field: 'Location' },
+      {headerName: 'Quantity', field: 'Quantity', editable: true },
     ]
   }
   onClose() {

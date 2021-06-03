@@ -7,11 +7,12 @@
         <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
     </mat-form-field>
     <span class=spacer></span>
+    <span style="font-weight: 900; color: #2f3643;;">{{ authService.getCurrentUser().department | uppercase}} CYCLE COUNT</span>
 </mat-toolbar>
 <ag-grid-angular 
     #agGrid
     id='extractionGrid'
-    style="width: 100%; height: 85%;"
+    style="width: 100%; height: 80%;"
     [headerHeight]=55
     [defaultColDef] = "defaultColDef"
     class='ag-theme-alpine'
@@ -19,9 +20,10 @@
     [columnDefs]='columnDefs'
     [animateRows]="true"
     [frameworkComponents]="frameworkComponents"
-    (firstDataRendered)="onFirstDataRendered($event)"
     (gridReady)="onGridReady($event)"
     [pagination]="true"
     [paginationPageSize]=50
     [context]="context"
 ></ag-grid-angular>
+
+<!-- (firstDataRendered)="onFirstDataRendered($event)" -->

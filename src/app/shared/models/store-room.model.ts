@@ -9,5 +9,6 @@ export interface IStoreRoom {
     Usage_Level: string;
     Issued: number;
     Received: number;
-    Is_Special_Request: boolean
+    Is_Special_Request: boolean;
+    Is_Active: boolean;
 }

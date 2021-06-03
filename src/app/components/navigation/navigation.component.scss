@@ -1,3 +1,20 @@
+.sidenav-container {
+  height: 100%;
+}
+
+// .sidenav {
+//   width: 200px;
+// }
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 .mat-toolbar.mat-primary {
   position: sticky;
   height: 4em;
@@ -11,9 +28,10 @@
   color: black;
 }
 .logo {
-  margin-top: 0.3em;
+  margin: 0.3em;
   height: 3em;
-  margin-right: 3em;
+  margin-right: 1em;
+  padding: 0.5em;
 }
 .mat-icon {
   font-size: 4em;
@@ -39,10 +57,4 @@
 
 .example-sidenav {
   padding: 20px;
-}
-.mat-select-panel {
-  background: red;
-}
-.mat-select-arrow {
-  border: none;
 }

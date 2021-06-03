@@ -4,6 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { MassSpecButtonRendererComponent } from './mass-spec-button-renderer/mass-spec-button-renderer.component';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { ColumnDefsService } from 'src/app/shared/services/column-defs.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
 @Component({
   selector: 'app-mass-spec',
@@ -22,7 +23,9 @@ export class MassSpecComponent implements OnInit {
   columnDefs: any;
   rowData: any;
 
-  constructor(private massSpecService: MassSpecService, private needToOrderService: NeedToOrderService, private columnDefsService: ColumnDefsService) { 
+  constructor(private massSpecService: MassSpecService, 
+              private columnDefsService: ColumnDefsService,
+              private snackbarService: SnackbarService) { 
     this.frameworkComponents = { buttonRenderer: MassSpecButtonRendererComponent }
     this.context = { massSpecCompoent: this }
   }
@@ -75,5 +78,11 @@ export class MassSpecComponent implements OnInit {
       allColumnIds.push(column.colId);
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+  }
+  sendEmailReport() {
+    this.massSpecService.sendEmailReport().subscribe({
+      next: () => this.snackbarService.openSnackBar('Email has been sent', 'success'),
+      error: () => this.snackbarService.openSnackBar('Email has not been sent', 'error')
+    })
   }
 }

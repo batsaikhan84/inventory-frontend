@@ -6,10 +6,11 @@
           </button>
         <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
     </mat-form-field>
+    <button mat-raised-button color='warn' (click)="sendEmailReport()">Print Report</button>
     <span class=spacer></span>
     <button mat-raised-button (click)="sizeToFit()">Size to Fit</button>
     <button mat-raised-button (click)="autoSizeAll(false)">Auto-Size All</button>
-    <mat-card style="padding: 2px 10px; background-color: #673ab7; color: white;">MASS SPEC</mat-card>
+    <mat-card style="padding: 2px 10px; background-color: #0d47a1; color: white;">MASS SPEC</mat-card>
 </mat-toolbar>
 <ag-grid-angular 
     #agGrid

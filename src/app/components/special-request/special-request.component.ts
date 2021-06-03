@@ -29,7 +29,7 @@ export class SpecialRequestComponent implements OnInit {
   constructor(private dialog: MatDialog, 
               private masterService: MasterService,
               private specialRequestService: SpecialRequestService,
-              private authService: AuthService,
+              public authService: AuthService,
               private specialRequestConfirmationDataService: SpecialRequestConfirmationDataService,
               private snackbarService: SnackbarService
               ) { }
@@ -102,9 +102,9 @@ export class SpecialRequestComponent implements OnInit {
   sizeToFit() {
     this.gridApi.sizeColumnsToFit();
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   autoSizeAll(skipHeader: any) {
     var allColumnIds: any[] = [];
     this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {

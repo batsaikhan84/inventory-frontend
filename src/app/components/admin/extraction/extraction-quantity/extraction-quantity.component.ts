@@ -32,6 +32,8 @@ export class ExtractionQuantityComponent implements OnInit {
     this.columnDefs = [
       {headerName: 'Location', field: 'Location', minWidth: 500, editable: true },
       {headerName: 'Quantity', field: 'Quantity', minWidth: 140, editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
+      {headerName: 'Issued', field: 'Issued', editable: true},
+      {headerName: 'Received', field: 'Received', editable: true }
     ]
   }
   onClose() {
@@ -47,11 +49,36 @@ export class ExtractionQuantityComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
   }
-  handleUpdate(value: any) {
-    this.extractionService.updateExtractionItem(value.data.ID, value.data).subscribe(response => 
-      this.extractionService.getExtractionMasterItem(response.Item_ID).subscribe(response => {
-        this.rowItem = response
-      })
-    
-  )}
+  // handleUpdate(value: any) {
+  //   this.extractionService.updateExtractionItem(value.data.ID, value.data).subscribe(response => 
+  //     this.extractionService.getExtractionMasterItem(response.Item_ID).subscribe(response => {
+  //       this.rowItem = response
+  //     })
+  // )}
+  handleUpdate(params: any) {
+    let data = null
+    if(params.column.colId === 'Issued') {
+      const Quantity = params.data.Quantity - Number(params.newValue)
+      if(Quantity < 0) {
+        this.snackbarService.openSnackBar('cannot issue more than total on hand', 'error')
+        this.getExtractionItemsofMaster()
+        return
+      }
+      const Issued = 0
+      data = {...params.data, Quantity, Issued}
+    } else if(params.column.colId === 'Received') {
+      const Quantity = params.data.Quantity + Number(params.newValue)
+      const Received = 0
+      data = {...params.data, Quantity, Received}
+    } else {
+      data = {...params.data}
+    }
+    this.extractionService.updateExtractionItem(params.data.ID , data).subscribe({
+      next: data =>{ 
+        this.getExtractionItemsofMaster()},
+      error: error => {
+        console.error(error)
+      }
+    })
+  }
 }

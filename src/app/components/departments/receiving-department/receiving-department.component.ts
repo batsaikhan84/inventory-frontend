@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { ReceivingDepartmentButtonRendererComponent } from './receiving-department-button-renderer/receiving-department-button-renderer.component';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-receiving-department',
@@ -21,7 +22,9 @@ export class ReceivingDepartmentComponent implements OnInit {
   rowData: any;
   context: any;
 
-  constructor(private receivingService: ReceivingService, private needToOrderService: NeedToOrderService) { 
+  constructor(private receivingService: ReceivingService, 
+              private needToOrderService: NeedToOrderService,
+              public authService: AuthService) { 
     this.frameworkComponents = { buttonRenderer: ReceivingDepartmentButtonRendererComponent }
     this.context = { receivingComponent: this }
   }
@@ -57,9 +60,9 @@ export class ReceivingDepartmentComponent implements OnInit {
       {headerName: 'Comments', field: 'Comments', minWidth: 200}
     ]
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

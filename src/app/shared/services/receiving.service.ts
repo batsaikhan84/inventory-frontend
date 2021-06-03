@@ -7,22 +7,25 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ReceivingService {
-  baseExtractionUrl = 'http://localhost:3000/receiving'
-  baseMasterUrl = 'http://localhost:3000/master'
+  baseUrl = 'http://192.168.112.64:3000/receiving'
+  baseMasterUrl = 'http://192.168.112.64:3000/master'
   constructor(private _http: HttpClient) { }
   getReceivingItems() {
-    return this._http.get<IReceiving[]>(this.baseExtractionUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
+    return this._http.get<IReceiving[]>(this.baseUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getReceivingMasterItems() {
-    return this._http.get<IReceiving[]>(`${this.baseExtractionUrl}/master`).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
+    return this._http.get<IReceiving[]>(`${this.baseUrl}/master`).pipe(map(res => res.filter(item => item.master.Is_Active === true)))
   }
   getReceivingMasterItem(id: number) {
-    return this._http.get<IReceiving>(`${this.baseExtractionUrl}/master/${id}`)
+    return this._http.get<IReceiving>(`${this.baseUrl}/master/${id}`)
   }
   getReceivingItemsOfMaster(id: number) {
     return this._http.get<IReceiving>(`${this.baseMasterUrl}/${id}/receiving`)
   }
   updateReceivingItem(id: number, data: IReceiving) {
-    return this._http.patch<IReceiving>(`${this.baseExtractionUrl}/${id}`, data)
+    return this._http.patch<IReceiving>(`${this.baseUrl}/${id}`, data)
+  }
+  sendEmailReport() {
+    return this._http.get(`${this.baseUrl}/email`)
   }
 }

@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class QualityService {
-  baseExtractionUrl = 'http://localhost:3000/quality'
-  baseMasterUrl = 'http://localhost:3000/master'
+  baseExtractionUrl = 'http://192.168.112.64:3000/quality'
+  baseMasterUrl = 'http://192.168.112.64:3000/master'
   constructor(private _http: HttpClient) { }
   getQualityItems() {
     return this._http.get<IQuality[]>(this.baseExtractionUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))

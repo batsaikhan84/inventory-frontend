@@ -9,13 +9,12 @@
 <ag-grid-angular
     #agGrid
     id='masterInventoryGrid'
-    style="width: 100%; height: 50em;"
+    style="width: 100%; height: 45em;"
     [headerHeight]=50
     [defaultColDef] = "defaultColDef"
     class='ag-theme-alpine'
     [rowData]='rowData'
     [columnDefs]='columnDefs'
-    (firstDataRendered)="onFirstDataRendered($event)"
     (gridReady)="onGridReady($event)"
     [pagination]="true"
     [animateRows]="true"
@@ -24,3 +23,5 @@
     (selectionChanged)="getSelectedRows()"
     (cellValueChanged)="handleUpdate($event)"
 ></ag-grid-angular>
+
+<!-- (firstDataRendered)="onFirstDataRendered($event)" -->

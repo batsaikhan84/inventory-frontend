@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class MasterService {
-  baseUrl = 'http://localhost:3000/master'
+  baseUrl = 'http://192.168.112.64:3000/master'
   constructor(private _http: HttpClient) { }
   getMasterItems() {
     return this._http.get<IMaster[]>(this.baseUrl).pipe(map(items => items.filter(item => item.Is_Active === true )))

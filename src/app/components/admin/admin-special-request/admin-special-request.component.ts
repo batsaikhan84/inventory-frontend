@@ -71,10 +71,10 @@ export class AdminSpecialRequestComponent implements OnInit {
         cellStyle: { 'background-color': 'lightblue', 'font-weight': 600 }, 
         cellRenderer: 'dropdownRenderer' },
       {headerName: 'Time Requested', field: 'Time_Requested', valueFormatter: function(params: any) {
-        return new Date(params.data.Time_Requested).toLocaleDateString()
+        return `${new Date(params.data.Time_Requested).toLocaleDateString()} ${new Date(params.data.Time_Requested).toLocaleTimeString()}`
       }},
       {headerName: 'Time Updated', field: 'Time_Updated', valueFormatter: function(params: any) {
-        return new Date(params.data.Time_Updated).toLocaleDateString()
+        return `${new Date(params.data.Time_Updated).toLocaleDateString()} ${new Date(params.data.Time_Updated).toLocaleTimeString()}`
       }},
     ]
   }

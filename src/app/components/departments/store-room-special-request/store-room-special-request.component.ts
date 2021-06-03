@@ -32,7 +32,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
   constructor(private dialog: MatDialog, 
               private storeRoomService: StoreRoomService,
               private specialRequestService: SpecialRequestService,
-              private authService: AuthService,
+              public authService: AuthService,
               private srConfirmationDataService: SrConfirmationDataService,
               private snackbarService: SnackbarService) { 
     this.context = { componentFromStoreRoomSpecialRequest: this }
@@ -110,9 +110,9 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
       this.isSendButtonDisabled = true
     }
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+  // onFirstDataRendered(params: any) {
+  //   params.api.sizeColumnsToFit();
+  // }
   autoSizeAll(skipHeader: any) {
     var allColumnIds: any[] = [];
     this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {

@@ -6,9 +6,8 @@
           </button>
         <mat-icon matSuffix (click) = 'handleClearSearch()' *ngIf="!searchValue" >search</mat-icon>
     </mat-form-field>
-    <span class=spacer></span>
-    <button mat-raised-button color="warn">Download 1</button>
-    <button mat-raised-button color="warn">Download 2</button>
+    <span class="spacer"></span>
+    <div style="font-weight: 900; color: #2f3643;;">{{ authService.getCurrentUser().department | uppercase }} USDTL STORE ROOM INVENTORY</div>
 </mat-toolbar>
 <mat-horizontal-stepper>
     <mat-step>
@@ -22,7 +21,7 @@
         <ag-grid-angular
         #agGrid
         id='masterInventoryGrid'
-        style="width: 100%; height: 50em;"
+        style="width: 100%; height: 45em;"
         [headerHeight]=50
         [defaultColDef] = "defaultColDef"
         class='ag-theme-alpine'
@@ -30,7 +29,6 @@
         [columnDefs]='columnDefs'
         rowSelection="single"
         (selectionChanged)="getSelectedRows()"
-        (firstDataRendered)="onFirstDataRendered($event)"
         (gridReady)="onGridReady($event)"
         [pagination]="true"
         [animateRows]="true"
@@ -46,10 +44,12 @@
       </mat-step>
     <mat-step>
         <form >
-          <ng-template matStepLabel>YOUR CONFIRED REQUEST STATUS</ng-template>
+          <ng-template matStepLabel>YOUR REQUEST STATUS</ng-template>
           <app-store-room-special-request-status></app-store-room-special-request-status>
         </form>
       </mat-step>
   </mat-horizontal-stepper>
+
+  <!-- (firstDataRendered)="onFirstDataRendered($event)" -->
 
 

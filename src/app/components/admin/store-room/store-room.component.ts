@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
+import { IStoreRoom } from 'src/app/shared/models/store-room.model';
 import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { StoreRoomService } from 'src/app/shared/services/store-room.service';
@@ -11,6 +12,8 @@ import { StoreRoomService } from 'src/app/shared/services/store-room.service';
 })
 export class StoreRoomComponent implements OnInit {
   rowDataClicked = {}
+  isDeleteButtonDisabled: boolean = true;
+  selectedItem: IStoreRoom;
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
   searchValue: string = '';
   gridApi: any;
@@ -36,7 +39,8 @@ export class StoreRoomComponent implements OnInit {
   getStoreRoomMaster(): void {
     this.storeRoomService.getStoreRoomMasterItems().subscribe({
       next: res => {
-        this.rowData = res
+        console.log(res)
+        this.rowData = res.filter(item => item.Is_Active === true)
       }
     })
   }
@@ -45,7 +49,7 @@ export class StoreRoomComponent implements OnInit {
   }
   handleEditing() {
     this.columnDefs = [
-      {headerName: 'ID', field: 'ID', minWidth: 100},
+      {headerName: 'ID', field: 'ID', minWidth: 100, checkboxSelection: true },
       {headerName: 'Item', field: 'Item', minWidth: 450},
       {headerName: 'Item ID', field: 'Item_ID', minWidth: 100},
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
@@ -86,6 +90,32 @@ export class StoreRoomComponent implements OnInit {
     this.searchValue = ''
     this.handleSearch(this.searchValue)
   }
+  getSelectedRows() {
+    const selectedNodes = this.agGrid.api.getSelectedNodes();
+    const getSelectedData = selectedNodes.map(node => {
+      this.selectedItem = node.data
+    })
+    if(getSelectedData.length > 0) {
+      this.isDeleteButtonDisabled = false
+    } else {
+      this.isDeleteButtonDisabled = true
+    }
+
+  }
+  handleDelete() {
+    const selectedItem = { ...this.selectedItem, Is_Active: false }
+    this.storeRoomService.deactivateStoreRoomItem(this.selectedItem.ID, selectedItem).subscribe({
+      next: data => {
+        this.getStoreRoomMaster()
+        this.snackbarService.openSnackBar('item deleted successfully', 'success')
+      },
+      error: error => {
+        this.snackbarService.openSnackBar('item deleted unsuccessfully', 'error')
+        this.getStoreRoomMaster()
+      }
+    })
+    this.isDeleteButtonDisabled = true
+  }
   handleUpdate(params: any) {
     let data = null
     if(params.column.colId === 'Issued') {
@@ -106,7 +136,6 @@ export class StoreRoomComponent implements OnInit {
     }
     this.storeRoomService.updateStoreRoomItem(params.data.ID , data).subscribe({
       next: data =>{ 
-        console.log(data)
         this.getStoreRoomMaster()},
       error: error => {
         console.error(error)

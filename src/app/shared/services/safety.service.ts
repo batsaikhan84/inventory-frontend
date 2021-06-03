@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SafetyService {
-  baseExtractionUrl = 'http://localhost:3000/safety'
-  baseMasterUrl = 'http://localhost:3000/master'
+  baseExtractionUrl = 'http://192.168.112.64:3000/safety'
+  baseMasterUrl = 'http://192.168.112.64:3000/master'
   constructor(private _http: HttpClient) { }
   getSafetyItems() {
     return this._http.get<ISafety[]>(this.baseExtractionUrl)
