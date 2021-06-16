@@ -15,6 +15,7 @@ export class MasterComponent implements OnInit {
   @ViewChild('agGrid', {static: false}) agGrid: AgGridAngular;
   baseUrl = 'http://localhost:3000/master'
   isSpecialRequest: boolean = false
+  isEditing = false
   isDeleteButtonDisabled: boolean = true;
   isAssignButtonDisabled: boolean = true;
   selectedItem: IMaster;
@@ -75,7 +76,7 @@ export class MasterComponent implements OnInit {
     }
 
   }
-  handleEditing(isEditing: boolean = false) {
+  handleEditing(isEditing: boolean = true) {
     this.columnDefs = [
       {headerName: 'ID', field: 'ID', minWidth: 100, maxWidth: 110, checkboxSelection: true},
       {headerName: 'Item', field: 'Item', editable: isEditing},
@@ -95,9 +96,7 @@ export class MasterComponent implements OnInit {
       {headerName: 'Class', field: 'Class', maxWidth: 140, editable: isEditing},
     ]
   }
-  onFirstDataRendered(params: any) {
-    params.api.sizeColumnsToFit();
-  }
+
   sizeToFit() {
     this.gridApi.sizeColumnsToFit();
   }
@@ -128,7 +127,9 @@ export class MasterComponent implements OnInit {
   }
   handleUpdate(value: any) {
     this._masterService.updateMasterItem(value.data.ID , value.data, '').subscribe({
-      next: data => this.snackbarService.openSnackBar('value updated successfully', 'success'),
+      next: data => {
+        this.snackbarService.openSnackBar('value updated successfully', 'success')
+      },
       error: () => this.snackbarService.openSnackBar('value updated unsuccessfully', 'error')
     })
   }
@@ -150,17 +151,5 @@ export class MasterComponent implements OnInit {
   onSearchClear() {
     this.searchValue = ''
     this.handleSearch(this.searchValue)
-  }
-  toggleEditMode() {
-    if(this.editText === 'Start Editing') {
-      this.autoSizeAll(false);
-      this.editText = 'Stop Editing';
-      this.handleEditing(true) 
-    } else {
-      this.sizeToFit()
-      this.editText = 'Start Editing'
-      this.handleEditing() 
-    }
-      
   }
 }

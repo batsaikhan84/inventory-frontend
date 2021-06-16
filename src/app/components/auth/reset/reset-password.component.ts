@@ -13,6 +13,7 @@ export class ResetPasswordComponent implements OnInit {
   @Output() resetPasswordEvent = new EventEmitter<boolean>();
   isForgotPassword: boolean = false
   buttonText = 'Forgot Password?'
+  isReseting = false
   loginErrorMessage: string = ''
   passwordHide = true;
   confirmHide = true;
@@ -27,10 +28,12 @@ export class ResetPasswordComponent implements OnInit {
     this.dataService.currentMessage.subscribe(message => this.loginErrorMessage = message)
   }
   onSubmit = () => {
+    this.isReseting = true
     this.authService.resetPassword(this.resetPassword.value).subscribe({
       next: () => {
           this.dataService.loginErrorMessage('')
           this.resetPasswordEvent.emit(false)
+          this.isReseting = false
       },
       error: (error) => {
         if(error.status === 401) {

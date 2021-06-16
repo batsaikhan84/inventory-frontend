@@ -11,8 +11,8 @@ export class SnackbarService {
   openSnackBar(message: string, messageType: 'error' | 'success') {
     this._snackBar.openFromComponent(SnackbarComponent,  
       { duration: 6000, 
-        horizontalPosition: 'end', 
-        verticalPosition: 'top', 
+        horizontalPosition: 'center', 
+        verticalPosition: 'bottom', 
         panelClass: messageType,
         data: {
           message: message,

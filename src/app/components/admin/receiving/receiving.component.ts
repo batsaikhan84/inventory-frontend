@@ -43,6 +43,9 @@ export class ReceivingComponent implements OnInit {
       enableCellChangeFlash: true
     }
   }
+  download() {
+    this.gridApi.exportDataAsCsv()
+  }
   getReceivingQuantity(): void {
     this.receivingService.getReceivingMasterItems().subscribe({
       next: res => {

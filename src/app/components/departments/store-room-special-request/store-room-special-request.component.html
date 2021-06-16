@@ -28,6 +28,7 @@
         [rowData]='rowData'
         [columnDefs]='columnDefs'
         rowSelection="single"
+        (firstDataRendered)="onFirstDataRendered($event)"
         (selectionChanged)="getSelectedRows()"
         (gridReady)="onGridReady($event)"
         [pagination]="true"
@@ -50,6 +51,6 @@
       </mat-step>
   </mat-horizontal-stepper>
 
-  <!-- (firstDataRendered)="onFirstDataRendered($event)" -->
+
 
 

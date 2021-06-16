@@ -30,7 +30,7 @@ export class MassSpecDepartmentButtonRendererComponent implements AgRendererComp
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "50%";
+    dialogConfig.width = "70%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
     const currentDialog = this.dialog.open(MassSpecDepartmentQuantityComponent, dialogConfig)
     currentDialog.afterClosed().subscribe(() => this.params.context.massSpecComponent.getMassSpecQuantity())

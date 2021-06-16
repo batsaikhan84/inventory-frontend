@@ -11,6 +11,7 @@
     class='ag-theme-alpine'
     [rowData]='rowData'
     [columnDefs]='columnDefs'
+    [singleClickEdit]="true"
     (firstDataRendered)="onFirstDataRendered($event)"
     [animateRows]="true"
     (gridReady)="onGridReady($event)"

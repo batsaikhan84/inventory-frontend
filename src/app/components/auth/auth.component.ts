@@ -1,6 +1,4 @@
-import { AuthService } from './../../shared/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'
 import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
@@ -12,7 +10,7 @@ export class AuthComponent implements OnInit {
   buttonText = 'Forgot Password?'
   isForgotPassword = false
   loginErrorMessage: string = ''
-  constructor(private authService: AuthService, private _router: Router, private dataService: DataService) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.currentMessage.subscribe(message => this.loginErrorMessage = message)
@@ -21,17 +19,20 @@ export class AuthComponent implements OnInit {
     return 'This field is required';
   }
   buttonTextToggle() {
-    if(this.isForgotPassword === true) {
-      this.isForgotPassword = false
+    this.isForgotPassword = !this.isForgotPassword
+    if(this.buttonText === 'Sign In') {
       this.buttonText = 'Forgot Password?'
       this.loginErrorMessage = ''
-    } else {
-      this.isForgotPassword = true
-      this.buttonText = 'Sign In'
-      this.loginErrorMessage = ''
+      return
     }
+    this.buttonText = 'Forgot Password?'
+    this.buttonText = 'Sign In'
+    this.loginErrorMessage = ''
   }
   handleEventEmitter($event: boolean) {
     this.isForgotPassword = $event
+    if($event === false) {
+      this.buttonText = 'Forgot Password'
+    }
   }
 }

@@ -64,7 +64,7 @@ export class SpecialRequestComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "40%";
+    dialogConfig.width = "70%";
     dialogConfig.data = this.selectedItem
     this.dialog.open(SpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
       this.gridApi.deselectAll()

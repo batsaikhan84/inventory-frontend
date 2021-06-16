@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { SpecialRequestStatusDataService } from 'src/app/shared/services/special-request-status-data.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 
@@ -21,11 +22,15 @@ export class SpecialRequestStatusComponent implements OnInit {
 
   constructor(private specialRequestService: SpecialRequestService,
               private authService: AuthService,
-              private specialRequestStatusDataService: SpecialRequestStatusDataService ) { }
+              private specialRequestStatusDataService: SpecialRequestStatusDataService,
+              private snackbarService: SnackbarService ) { }
 
   ngOnInit(): void {
     this.getStatusItems()
-    this.specialRequestStatusDataService.currentStatusItems.subscribe(res => this.rowData = res)
+    this.specialRequestStatusDataService.currentStatusItems.subscribe({
+      next: data => this.rowData = data,
+      error: (error) => this.snackbarService.openSnackBar(error.toString(), 'error')
+    })
     this.handleEditing()
     this.defaultColDef = { 
       resizable: true,

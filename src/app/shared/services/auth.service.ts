@@ -30,6 +30,10 @@ export class AuthService {
         this.dataService.loginErrorMessage('')
         if(decodedToken.role === 'admin') {
           this._router.navigate(['/admin/store-room'])
+        } else if(decodedToken.username === 'brichey') {
+          this._router.navigate([`/department/store-room-department`])
+        } else if(decodedToken.role === 'lab-director') {
+          this._router.navigate([`/lab-director/store-room-special-request`])
         } else {
           this._router.navigate([`/department/${decodedToken.department}`])
         }

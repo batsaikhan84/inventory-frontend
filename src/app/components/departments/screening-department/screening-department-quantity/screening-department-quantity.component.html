@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
     <span>UPDATE TOTAL</span>
-    <span class="fill-remaining-space"></span>
+    <span class="spacer"></span>
     <button class="btn-dialog-close" mat-raised-button color="warn" (click)="onClose()" ><mat-icon matSuffix>done</mat-icon>DONE</button>
 </mat-toolbar>
 <ag-grid-angular
@@ -11,6 +11,7 @@
     class='ag-theme-alpine'
     [rowData]='rowData'
     [columnDefs]='columnDefs'
+    [singleClickEdit]="true"
     (firstDataRendered)="onFirstDataRendered($event)"
     [animateRows]="true"
     (gridReady)="onGridReady($event)"

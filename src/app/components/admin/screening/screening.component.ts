@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColumnDefsService } from 'src/app/shared/services/column-defs.service';
-import { NeedToOrderService } from 'src/app/shared/services/need-to-order.service';
 import { ScreeningService } from 'src/app/shared/services/screening.service';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { ScreeningButtonRendererComponent } from './screening-button-renderer/screening-button-renderer.component';
@@ -39,6 +38,9 @@ export class ScreeningComponent implements OnInit {
       enableCellChangeFlash: true
     }
   }
+  download() {
+    this.gridApi.exportDataAsCsv()
+  }
   getScreeningQuantity(): void {
     this.screeningService.getScreeningMasterItems().subscribe(responseData => this.rowData = responseData)
   }
@@ -52,6 +54,16 @@ export class ScreeningComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
   }
+  sizeToFit() {
+    this.gridApi.sizeColumnsToFit();
+  }
+  autoSizeAll(skipHeader: any) {
+    var allColumnIds: any[] = [];
+    this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {
+      allColumnIds.push(column.colId);
+    });
+    this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
+  }
   handleSearch(value: string) {
     this.gridApi.setQuickFilter(value);
   }
@@ -61,7 +73,7 @@ export class ScreeningComponent implements OnInit {
   }
   handleUpdate(value: any) {
     this.screeningService.updateScreeningItem(value.data.ID , value.data).subscribe({
-      next: data => console.log(data),
+      next: () => { },
       error: error => {
         console.error(error)
       }

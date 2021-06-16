@@ -40,7 +40,6 @@ export class ExtractionButtonRendererComponent implements AgRendererComponent, I
     this.dialog.open(ExtractionQuantityComponent, dialogConfig).afterClosed().subscribe({
       next: () => {
         this.params.context.extractionComponent.getExtractionQuantity() 
-        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
       },
       error: () => {
         this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')

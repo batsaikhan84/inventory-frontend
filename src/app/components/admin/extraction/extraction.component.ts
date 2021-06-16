@@ -38,6 +38,9 @@ export class ExtractionComponent implements OnInit {
       enableCellChangeFlash: true
     }
   }
+  download() {
+    this.gridApi.exportDataAsCsv()
+  }
   getExtractionQuantity(): void {
     this.extractionService.getExtractionMasterItems().subscribe({
       next: items => {

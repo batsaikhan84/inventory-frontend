@@ -26,6 +26,9 @@ import { MassSpecDepartmentComponent } from './components/departments/mass-spec-
 import { ReceivingDepartmentComponent } from './components/departments/receiving-department/receiving-department.component';
 import { ResetPasswordComponent } from './components/auth/reset/reset-password.component';
 import { AdminSrSpecialRequestComponent } from './components/admin/admin-special-request/admin-sr-special-request/admin-sr-special-request.component';
+import { StoreRoomDepartmentComponent } from './components/departments/store-room-department/store-room-department.component';
+import { LabDirectorHomeComponent } from './components/lab-director/lab-director-home/lab-director-home.component';
+import { LabDirectorExtractionComponent } from './components/lab-director/lab-director-extraction/lab-director-extraction.component';
 
 const routes: Routes = [
   { path: 'auth/reset-password', component: ResetPasswordComponent },
@@ -56,6 +59,16 @@ const routes: Routes = [
       { path: 'rd', component: RdDepartmentComponent},
       { path: 'quality', component: QualityDepartmentComponent},
       { path: 'safety', component: SafetyDepartmentComponent},
+      { path: 'store-room-department', component: StoreRoomDepartmentComponent}
+    ]},
+  { path: 'lab-director', component: LabDirectorHomeComponent, canActivate: [AuthGuard],
+    children: [
+      { path: 'store-room-special-request', component: StoreRoomSpecialRequestComponent},
+      { path: 'general-special-request', component: SpecialRequestComponent},
+      { path: 'extraction', component: LabDirectorExtractionComponent},
+      { path: 'receiving', component: ReceivingDepartmentComponent},
+      { path: 'mass-spec', component: MassSpecDepartmentComponent},
+      { path: 'screening', component: ScreeningDepartmentComponent}
     ]},
 ];
 

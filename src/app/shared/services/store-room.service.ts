@@ -24,6 +24,9 @@ export class StoreRoomService {
   deactivateStoreRoomItem(id: number, item: IStoreRoom) {
     return this._http.patch(`${this.baseStoreRoomUrl}/deactivate/${id}`, item)
   }
+  sendEmailReport() {
+    return this._http.get(`${this.baseStoreRoomUrl}/email`)
+  }
 }
 
 

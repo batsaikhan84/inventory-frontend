@@ -40,6 +40,9 @@ export class MassSpecComponent implements OnInit {
     }
 
   }
+  download() {
+    this.gridApi.exportDataAsCsv()
+  }
   getMassSpecQuantity(): void {
     this.massSpecService.getMassSpecMasterItems().subscribe(responseData => this.rowData = responseData)
   }

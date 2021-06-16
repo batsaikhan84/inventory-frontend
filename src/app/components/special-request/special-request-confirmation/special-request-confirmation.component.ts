@@ -126,7 +126,11 @@ export class SpecialRequestConfirmationComponent implements OnInit {
         if(data === true) {
           this.selectedRows.map(item => {
             this.specialRequestService.deleteItem(item.ID).subscribe({
-              next: () => this.snackbarService.openSnackBar(`ID: ${item.ID} item deleted successfully'`, 'success'),
+              next: () => {
+                this.snackbarService.openSnackBar(`ID: ${item.ID} item deleted successfully'`, 'success')
+                this.getSpecialRequestItems()
+                this.specialRequestConfirmationDataService.currentConfirmationItems.subscribe(res => this.rowData = res)
+              },
               error: () => this.snackbarService.openSnackBar(`ID: ${item.ID} item deleted unsuccessfully'`, 'error')
             })
           })

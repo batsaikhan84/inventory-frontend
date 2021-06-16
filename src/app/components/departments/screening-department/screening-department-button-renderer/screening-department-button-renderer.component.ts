@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AgRendererComponent, ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
-import { ScreeningQuantityComponent } from 'src/app/components/admin/screening/screening-quantity/screening-quantity.component';
 import { IScreening } from 'src/app/shared/models/screening.model';
 import { ScreeningService } from 'src/app/shared/services/screening.service';
+import { ScreeningDepartmentQuantityComponent } from '../screening-department-quantity/screening-department-quantity.component';
 
 @Component({
   selector: 'app-screening-department-button-renderer',
@@ -12,7 +12,8 @@ import { ScreeningService } from 'src/app/shared/services/screening.service';
   styleUrls: ['./screening-department-button-renderer.component.scss']
 })
 export class ScreeningDepartmentButtonRendererComponent implements AgRendererComponent, ICellRendererAngularComp {
-  constructor(private dialog: MatDialog, private screeningService: ScreeningService) { }
+  constructor(private dialog: MatDialog, 
+              private screeningService: ScreeningService) { }
   rowItem: IScreening;
   cellValue: number;
   params: ICellRendererParams;
@@ -30,10 +31,9 @@ export class ScreeningDepartmentButtonRendererComponent implements AgRendererCom
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "50%";
+    dialogConfig.width = "70%";
     dialogConfig.data = {rowItem: this.rowItem, cellValue: this.cellValue}
-    const currentDialog = this.dialog.open(ScreeningQuantityComponent, dialogConfig)
-    currentDialog.afterClosed().subscribe(() => this.params.context.screeningComponent.getScreeningQuantity())
+    this.dialog.open(ScreeningDepartmentQuantityComponent, dialogConfig).afterClosed().subscribe(() => this.params.context.screeningComponent.getScreeningQuantity())
   }
   buttonClicked() {
     this.openDialog()

@@ -12,6 +12,7 @@ export class SigninFormComponent implements OnInit {
   buttonText = 'Forgot Password?'
   isForgotPassword = false
   loginErrorMessage: string = ''
+  isLoginIn = false
   hide = true;
   signInForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -24,7 +25,10 @@ export class SigninFormComponent implements OnInit {
     this.dataService.currentMessage.subscribe(message => this.loginErrorMessage = message)
   }
   onSubmit = () => {
-    this.authService.signin(this.signInForm.value)
+    const username: string = this.signInForm.value.username.toLowerCase()
+    const password: string = this.signInForm.value.password
+    const user = {username: username, password: password}
+    this.authService.signin(user)
   }
   getErrorMessage() {
     return 'This field is required';

@@ -38,7 +38,6 @@ export class ScreeningButtonRendererComponent implements AgRendererComponent, IC
     this.dialog.open(ScreeningQuantityComponent, dialogConfig).afterClosed().subscribe({
       next: () => {
         this.params.context.screeningComponent.getScreeningQuantity()
-        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
       },
       error: () => {
         this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')

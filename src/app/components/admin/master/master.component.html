@@ -6,7 +6,7 @@
           </button>
         <mat-icon matSuffix (click)="onSearchClear()" *ngIf="!searchValue">search</mat-icon>
     </mat-form-field>
-    <button mat-raised-button color="warn" (click)="toggleEditMode()" ><mat-icon matSuffix>edit</mat-icon> {{ editText }}</button>
+    <!-- <button mat-raised-button color="warn" (click)="toggleEditMode()" ><mat-icon matSuffix>edit</mat-icon> {{ editText }}</button> -->
     <button mat-raised-button color="warn" (click)="openDialog()"><mat-icon matSuffix>add</mat-icon> Add Item</button>
     <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" [disabled]="isAssignButtonDisabled">Assign To Department</button>
     <mat-menu #menu="matMenu">
@@ -43,7 +43,6 @@
     [columnDefs]='columnDefs'
     rowSelection="single"
     (selectionChanged)="getSelectedRows()"
-    (firstDataRendered)="onFirstDataRendered($event)"
     (gridReady)="onGridReady($event)"
     [pagination]="true"
     [animateRows]="true"

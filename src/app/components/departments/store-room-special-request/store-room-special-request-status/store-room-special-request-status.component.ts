@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { SpecialRequestService } from 'src/app/shared/services/special-request.service';
 import { SrStatusDataService } from 'src/app/shared/services/sr-status-data.service';
 
@@ -20,11 +21,15 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
 
   constructor(private specialRequestService: SpecialRequestService,
               private authService: AuthService,
-              private srStatusDataService: SrStatusDataService ) { }
+              private srStatusDataService: SrStatusDataService,
+              private snackbarService: SnackbarService ) { }
 
   ngOnInit(): void {
     this.getStatusItems()
-    this.srStatusDataService.currentSrStatusItems.subscribe(res => this.rowData = res)
+    this.srStatusDataService.currentSrStatusItems.subscribe({
+      next: data => this.rowData = data,
+      error: (error) => this.snackbarService.openSnackBar(error.toString(), 'error')
+    })
     this.handleEditing()
     this.defaultColDef = { 
       resizable: true,
@@ -69,9 +74,9 @@ export class StoreRoomSpecialRequestStatusComponent implements OnInit {
   sizeToFit() {
     this.gridApi.sizeColumnsToFit();
   }
-  // onFirstDataRendered(params: any) {
-  //   params.api.sizeColumnsToFit();
-  // }
+  onFirstDataRendered(params: any) {
+    params.api.sizeColumnsToFit();
+  }
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;

@@ -32,10 +32,32 @@ export class ReceivingQuantityComponent implements OnInit {
       filter: true,
     }
     this.columnDefs = [
-      {headerName: 'Location', field: 'Location', minWidth: 500, editable: true },
-      {headerName: 'Quantity', field: 'Quantity', minWidth: 140, editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
-      {headerName: 'Issued', field: 'Issued', editable: true},
-      {headerName: 'Received', field: 'Received', editable: true }
+      {headerName: 'Location', field: 'Location', editable: true },
+      {headerName: 'Quantity', field: 'Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Quantity = Number(params.newValue)} },
+      {headerName: 'Issued', field: 'Issued', editable: true, valueSetter: (params: any) => {
+        if(params.newValue) {
+          if(params.data.Quantity - Number(params.newValue) < 0 ) {
+            this.snackbarService.openSnackBar('cannot issue more than total on hand', 'error')
+            return
+          }
+          params.data.Quantity = params.data.Quantity - Number(params.newValue)
+          if(params.data.Quantity <= params.data.Min_Quantity) {
+            params.data.Is_Need_To_Order = true
+            params.data.Order_Quantity = params.data.Max_Quantity - params.data.Quantity
+          }
+        }
+      }
+    },
+    {headerName: 'Received', field: 'Received', editable: true, valueSetter: (params: any) => {
+        if(params.newValue) {
+          params.data.Quantity = params.data.Quantity + Number(params.newValue) 
+          if(params.data.Quantity > params.data.Min_Quantity) {
+            params.data.Is_Need_To_Order = false
+            params.data.Order_Quantity = 0
+          }
+        }
+      }
+    }
     ]
   }
   onClose() {
@@ -51,32 +73,9 @@ export class ReceivingQuantityComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
   }
-  // handleUpdate(value: any) {
-  //   this.receivingService.updateReceivingItem(value.data.ID, value.data).subscribe(response => 
-  //     this.receivingService.getReceivingMasterItem(response.Item_ID).subscribe(resData => this.rowItem = resData)  
-  //   )
-  // }
   handleUpdate(params: any) {
-    let data = null
-    if(params.column.colId === 'Issued') {
-      const Quantity = params.data.Quantity - Number(params.newValue)
-      if(Quantity < 0) {
-        this.snackbarService.openSnackBar('cannot issue more than total on hand', 'error')
-        this.getMasterReceiving()
-        return
-      }
-      const Issued = 0
-      data = {...params.data, Quantity, Issued}
-    } else if(params.column.colId === 'Received') {
-      const Quantity = params.data.Quantity + Number(params.newValue)
-      const Received = 0
-      data = {...params.data, Quantity, Received}
-    } else {
-      data = {...params.data}
-    }
-    this.receivingService.updateReceivingItem(params.data.ID , data).subscribe({
-      next: data =>{ 
-        this.getMasterReceiving()},
+    this.receivingService.updateReceivingItem(params.data.ID , params.data).subscribe({
+      next: () => { },
       error: error => {
         console.error(error)
       }

@@ -93,6 +93,14 @@ import { SnackbarComponent } from './shared/shareComponents/snackbar/snackbar.co
 import { AuditComponent } from './audit/audit.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { ScreeningDepartmentQuantityComponent } from './components/departments/screening-department/screening-department-quantity/screening-department-quantity.component';
+import { StoreRoomDepartmentComponent } from './components/departments/store-room-department/store-room-department.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LabDirectorExtractionComponent } from './components/lab-director/lab-director-extraction/lab-director-extraction.component';
+import { LabDirectorReceivingComponent } from './components/lab-director/lab-director-receiving/lab-director-receiving.component';
+import { LabDirectorMassSpecComponent } from './components/lab-director/lab-director-mass-spec/lab-director-mass-spec.component';
+import { LabDirectorScreeningComponent } from './components/lab-director/lab-director-screening/lab-director-screening.component';
+import { LabDirectorHomeComponent } from './components/lab-director/lab-director-home/lab-director-home.component';
 
 @NgModule({
   declarations: [
@@ -165,7 +173,14 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     SnackbarComponent,
     StatusRendererComponent,
     AuditComponent,
-    NavigationComponent
+    NavigationComponent,
+    ScreeningDepartmentQuantityComponent,
+    StoreRoomDepartmentComponent,
+    LabDirectorExtractionComponent,
+    LabDirectorReceivingComponent,
+    LabDirectorMassSpecComponent,
+    LabDirectorScreeningComponent,
+    LabDirectorHomeComponent
   ],
   exports: [
     MatChipsModule
@@ -197,6 +212,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatChipsModule,
     MatTabsModule,
     MatStepperModule,
+    MatProgressSpinnerModule,
     AgGridModule.withComponents([ExtractionButtonRendererComponent,
                                   MassSpecButtonRendererComponent,
                                   ReceivingButtonRendererComponent,

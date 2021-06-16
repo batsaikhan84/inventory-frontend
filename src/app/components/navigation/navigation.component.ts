@@ -47,7 +47,7 @@ export class NavigationComponent {
     return this.authService.getCurrentUser().department === "extraction" ? true : false
   }
   isMassSpec(): boolean {
-    return this.authService.getCurrentUser().department === "massSpec" ? true : false
+    return this.authService.getCurrentUser().department === "mass-spec" ? true : false
   }
   isReceiving(): boolean {
     return this.authService.getCurrentUser().department=== "receiving" ? true : false

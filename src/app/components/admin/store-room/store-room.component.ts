@@ -39,10 +39,18 @@ export class StoreRoomComponent implements OnInit {
   getStoreRoomMaster(): void {
     this.storeRoomService.getStoreRoomMasterItems().subscribe({
       next: res => {
-        console.log(res)
         this.rowData = res.filter(item => item.Is_Active === true)
       }
     })
+  }
+  sendEmailReport() {
+    this.storeRoomService.sendEmailReport().subscribe({
+      next: () => this.snackbarService.openSnackBar('Email has been sent', 'success'),
+      error: (error) => this.snackbarService.openSnackBar(error.toString(), 'error')
+    })
+  }
+  download() {
+    this.gridApi.exportDataAsCsv()
   }
   onBtnClick(event: any) {
     this.rowDataClicked = event.rowData
@@ -50,7 +58,7 @@ export class StoreRoomComponent implements OnInit {
   handleEditing() {
     this.columnDefs = [
       {headerName: 'ID', field: 'ID', minWidth: 100, checkboxSelection: true },
-      {headerName: 'Item', field: 'Item', minWidth: 450},
+      {headerName: 'Item', field: 'Item', minWidth: 400},
       {headerName: 'Item ID', field: 'Item_ID', minWidth: 100},
       {headerName: 'Purchase Unit', field: 'Purchase_Unit', minWidth: 150},
       {headerName: 'Part Number', field: 'Part_Number', minWidth: 150},
@@ -62,8 +70,30 @@ export class StoreRoomComponent implements OnInit {
       {headerName: 'Min Quantity', field: 'Min_Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Min_Quantity = params.newValue ? Number(params.newValue) : null}},
       {headerName: 'Max Quantity', field: 'Max_Quantity', editable: true, 'type': 'numericColumn', valueSetter: (params: any)=>{params.data.Max_Quantity = params.newValue ? Number(params.newValue) : null}},
       {headerName: 'Need To Order', field: 'Order_Quantity', cellStyle: this.needToOrderService.styleNeedToOrder, valueFormatter: this.needToOrderService.getNeedToOrderNumber},
-      {headerName: 'Issued', field: 'Issued', editable: true},
-      {headerName: 'Received', field: 'Received', editable: true }
+      {headerName: 'Issued', field: 'Issued', editable: true, valueSetter: (params: any) => {
+          if(params.newValue) {
+            if(params.data.Quantity - Number(params.newValue) < 0 ) {
+              this.snackbarService.openSnackBar('cannot issue more than total on hand', 'error')
+              return
+            }
+            params.data.Quantity = params.data.Quantity - Number(params.newValue)
+            if(params.data.Quantity <= params.data.Min_Quantity) {
+              params.data.Is_Need_To_Order = true
+              params.data.Order_Quantity = params.data.Max_Quantity - params.data.Quantity
+            }
+          }
+        }
+      },
+      {headerName: 'Received', field: 'Received', editable: true, valueSetter: (params: any) => {
+          if(params.newValue) {
+            params.data.Quantity = params.data.Quantity + Number(params.newValue) 
+            if(params.data.Quantity > params.data.Min_Quantity) {
+              params.data.Is_Need_To_Order = false
+              params.data.Order_Quantity = 0
+            }
+          }
+        }
+      }
     ]
   }
   sizeToFit() {
@@ -76,7 +106,7 @@ export class StoreRoomComponent implements OnInit {
     });
     this.gridColumnApi.autoSizeColumns(allColumnIds, skipHeader);
   }
-  onFirstDataRendered(params: any) {
+    onFirstDataRendered(params: any) {
     params.api.sizeColumnsToFit();
   }
   onGridReady(params: any) {
@@ -117,29 +147,11 @@ export class StoreRoomComponent implements OnInit {
     this.isDeleteButtonDisabled = true
   }
   handleUpdate(params: any) {
-    let data = null
-    if(params.column.colId === 'Issued') {
-      const Quantity = params.data.Quantity - Number(params.newValue)
-      if(Quantity < 0) {
-        this.snackbarService.openSnackBar('cannot issue more than total on hand', 'error')
-        this.getStoreRoomMaster()
-        return
-      }
-      const Issued = 0
-      data = {...params.data, Quantity, Issued}
-    } else if(params.column.colId === 'Received') {
-      const Quantity = params.data.Quantity + Number(params.newValue)
-      const Received = 0
-      data = {...params.data, Quantity, Received}
-    } else {
-      data = {...params.data}
-    }
-    this.storeRoomService.updateStoreRoomItem(params.data.ID , data).subscribe({
-      next: data =>{ 
-        this.getStoreRoomMaster()},
-      error: error => {
-        console.error(error)
-      }
+    this.storeRoomService.updateStoreRoomItem(params.data.ID , params.data).subscribe({
+      next: (data) => {
+        data
+      },
+      error: error => this.snackbarService.openSnackBar('error', 'error')
     })
   }
 }

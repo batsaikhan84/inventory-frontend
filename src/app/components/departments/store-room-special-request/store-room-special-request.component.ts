@@ -91,7 +91,7 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "40%";
+    dialogConfig.width = "70%";
     dialogConfig.data = this.selectedItem
     this.dialog.open(StoreRoomSpecialRequestFormComponent, dialogConfig).afterClosed().subscribe(() => {
       this.gridApi.deselectAll()
@@ -101,6 +101,10 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
   getSelectedRows() {
     const selectedNodes = this.agGrid.api.getSelectedNodes();
     const getSelectedData = selectedNodes.map(node => {
+      // console.log(node.data)
+      // this.specialRequestService.getSpecialRequestItems().subscribe({
+      //   next: data => console.log(data)
+      // })
       this.selectedItem = node.data
       return node.data
     })
@@ -110,9 +114,9 @@ export class StoreRoomSpecialRequestComponent implements OnInit {
       this.isSendButtonDisabled = true
     }
   }
-  // onFirstDataRendered(params: any) {
-  //   params.api.sizeColumnsToFit();
-  // }
+  onFirstDataRendered(params: any) {
+    params.api.sizeColumnsToFit();
+  }
   autoSizeAll(skipHeader: any) {
     var allColumnIds: any[] = [];
     this.gridColumnApi.getAllColumns().forEach(function (column: { colId: any; }) {

@@ -38,7 +38,6 @@ export class ReceivingButtonRendererComponent implements AgRendererComponent, IC
     this.dialog.open(ReceivingQuantityComponent, dialogConfig).afterClosed().subscribe({
       next: () => {
         this.params.context.receivingComponent.getReceivingQuantity()
-        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
       },
       error: () => {
         this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')

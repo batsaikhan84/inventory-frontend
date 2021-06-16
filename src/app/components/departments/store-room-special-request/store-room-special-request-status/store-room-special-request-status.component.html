@@ -10,11 +10,11 @@
     [rowData]='rowData'
     [columnDefs]='columnDefs'
     rowSelection="single"
-
+    (firstDataRendered)="onFirstDataRendered($event)"
     (gridReady)="onGridReady($event)"
     [pagination]="true"
     [animateRows]="true"
     [paginationPageSize]=50
 ></ag-grid-angular>
 
-    <!-- (firstDataRendered)="onFirstDataRendered($event)" -->
+

@@ -10,8 +10,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class SignupFormComponent {
   hide = true;
-  departments = ['extraction', 'massSpec', 'receiving', 'quality', 'screening', 'rd', 'storeRoom', 'it', 'safety']
-  roles = ['admin', 'manager', 'supervisor', 'employee']
+  departments = ['extraction', 'mass-spec', 'receiving', 'quality', 'screening', 'rd', 'storeRoom', 'it', 'safety']
+  roles = ['admin', 'manager', 'supervisor', 'employee', 'coordinator', 'director', 'lab-director']
   constructor(private dialog: MatDialogRef<SignupFormComponent>, private _authService: AuthService) {}
   signupForm = new FormGroup({
     username: new FormControl('', [Validators.required]),

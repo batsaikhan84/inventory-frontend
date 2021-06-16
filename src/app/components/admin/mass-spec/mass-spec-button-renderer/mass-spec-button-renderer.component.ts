@@ -38,7 +38,6 @@ export class MassSpecButtonRendererComponent implements AgRendererComponent, ICe
     currentDialog.afterClosed().subscribe({
       next: () => {
         this.params.context.massSpecCompoent.getMassSpecQuantity()
-        this.snackbarService.openSnackBar('total quantity updated successfully', 'success')
       },
       error: () => {
         this.snackbarService.openSnackBar('total quantity updated unsuccessfully', 'error')
