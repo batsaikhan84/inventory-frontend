@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ReceivingService {
-  baseUrl = 'http://192.168.112.64:3000/receiving'
-  baseMasterUrl = 'http://192.168.112.64:3000/master'
+  baseUrl = 'http://192.168.112.191:3000/receiving'
+  baseMasterUrl = 'http://192.168.112.191:3000/master'
   constructor(private _http: HttpClient) { }
   getReceivingItems() {
     return this._http.get<IReceiving[]>(this.baseUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))

@@ -7,8 +7,8 @@ import { IScreening } from '../models/screening.model';
   providedIn: 'root'
 })
 export class ScreeningService {
-  baseUrl = 'http://192.168.112.64:3000/screening'
-  baseMasterUrl = 'http://192.168.112.64:3000/master'
+  baseUrl = 'http://192.168.112.191:3000/screening'
+  baseMasterUrl = 'http://192.168.112.191:3000/master'
   constructor(private _http: HttpClient) { }
   getScreeningItems() {
     return this._http.get<IScreening[]>(this.baseUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))

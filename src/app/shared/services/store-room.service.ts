@@ -6,8 +6,8 @@ import { IStoreRoom } from '../models/store-room.model';
   providedIn: 'root'
 })
 export class StoreRoomService {
-  baseStoreRoomUrl = 'http://192.168.112.64:3000/store-room'
-  baseMasterUrl = 'http://192.168.112.64:3000/master'
+  baseStoreRoomUrl = 'http://192.168.112.191:3000/store-room'
+  baseMasterUrl = 'http://192.168.112.191:3000/master'
   constructor(private _http: HttpClient) { }
   getStoreRoomItems() {
     return this._http.get<IStoreRoom[]>(this.baseStoreRoomUrl)

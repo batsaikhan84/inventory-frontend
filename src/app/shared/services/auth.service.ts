@@ -21,7 +21,7 @@ export class AuthService {
               private _snackbarService: SnackbarService) { }
 
   signin(formValue: { username: string, password: string }) {
-    return this._http.post('http://192.168.112.64:3000/auth/signin', formValue).subscribe({
+    return this._http.post('http://192.168.112.191:3000/auth/signin', formValue).subscribe({
       next: (res: any) => {
         localStorage.setItem('token', res.accessToken)
         const decodedToken = this.helper.decodeToken(res.accessToken)
@@ -50,7 +50,7 @@ export class AuthService {
     }, expirationDuration)
   }
   resetPassword(password: string) {
-    return this._http.post('http://192.168.112.64:3000/auth/reset-password', password)
+    return this._http.post('http://192.168.112.191:3000/auth/reset-password', password)
   }
   logout() {
     localStorage.removeItem('token')
@@ -93,12 +93,12 @@ export class AuthService {
     department: string,
     name: string
    }) {
-    this._http.post('http://192.168.112.64:3000/auth/signup', formValue).subscribe({
+    this._http.post('http://192.168.112.191:3000/auth/signup', formValue).subscribe({
       next: () => this._snackbarService.openSnackBar('User created successfully', 'success'),
       error: () => this._snackbarService.openSnackBar('User created unsuccessfully', 'error')
     })
   }
   forgotPassword(user: IForgotPassword) {
-    return this._http.post('http://192.168.112.64:3000/forgot', user)
+    return this._http.post('http://192.168.112.191:3000/forgot', user)
   }
 }

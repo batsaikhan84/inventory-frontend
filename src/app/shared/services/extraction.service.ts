@@ -8,8 +8,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ExtractionService {
-  baseExtractionUrl = 'http://192.168.112.64:3000/extraction'
-  baseMasterUrl = 'http://192.168.112.64:3000/master'
+  baseExtractionUrl = 'http://192.168.112.191:3000/extraction'
+  baseMasterUrl = 'http://192.168.112.191:3000/master'
   constructor(private _http: HttpClient) { }
   getExtractionItems() {
     return this._http.get<IExtraction[]>(this.baseExtractionUrl).pipe(map(res => res.filter(item => item.master.Is_Active === true)))

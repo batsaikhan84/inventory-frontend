@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ChemicalService {
-  chemicalUrl = 'http://192.168.112.64:3000/master/chemical'
+  chemicalUrl = 'http://192.168.112.191:3000/master/chemical'
   constructor(private _http: HttpClient) { }
   getChemicalItems() {
     return this._http.get<IMaster>(this.chemicalUrl)

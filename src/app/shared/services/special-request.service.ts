@@ -6,7 +6,7 @@ import { ISpecialRequest } from '../models/special-request.model';
   providedIn: 'root'
 })
 export class SpecialRequestService {
-  baseSpecialRequestUrl = 'http://192.168.112.64:3000/special-request'
+  baseSpecialRequestUrl = 'http://192.168.112.191:3000/special-request'
   constructor(private _http: HttpClient) { }
   getSpecialRequestItems() {
     return this._http.get<ISpecialRequest[]>(this.baseSpecialRequestUrl)
